@@ -26,7 +26,7 @@ class CustomSilverAppbar extends StatelessWidget {
             Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (context) => MoreScreen(),
+                builder: (context) => AccountScreen(),
               ),
             );
           },

@@ -171,6 +171,13 @@ final List<Activity> activities = [
 
 final List<Meal> meals = [
   Meal(
+    date: "Thứ 3, 11/05/2021",
+    breakfast: "Cơm trắng\nChả rim\nCanh tép",
+    lunch:
+        "Thịt kho dừa\nHành tây xào thịt bò\nTrứng cuộn\nGía đỗ xào su su\nCanh rau ngót thịt",
+    tea: "Trà sữa",
+  ),
+  Meal(
     date: "Thứ 4, 12/05/2021",
     breakfast: "Phở bò",
     lunch: "Cơm trắng\nMuối vừng",
