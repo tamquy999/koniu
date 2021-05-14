@@ -1,11 +1,16 @@
-import 'package:meta/meta.dart';
+class User {
+  int id;
+  String username;
+  String token;
 
-class Kid {
-  final String name;
-  final String imageUrl;
+  User({this.id, this.username, this.token});
 
-  const Kid({
-    @required this.name,
-    @required this.imageUrl,
-  });
+  factory User.fromDatabaseJson(Map<String, dynamic> data) => User(
+        id: data['id'],
+        username: data['username'],
+        token: data['token'],
+      );
+
+  Map<String, dynamic> toDatabaseJson() =>
+      {"id": this.id, "username": this.username, "token": this.token};
 }

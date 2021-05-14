@@ -1,5 +1,6 @@
-import 'package:flutter_facebook_responsive_ui/models/user_model.dart';
 import 'package:meta/meta.dart';
+
+import 'kid_model.dart';
 
 class Health {
   final Kid kid;

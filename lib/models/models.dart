@@ -1,4 +1,5 @@
 export 'user_model.dart';
+export 'kid_model.dart';
 export 'teacher_model.dart';
 export 'post_model.dart';
 export 'activity_model.dart';

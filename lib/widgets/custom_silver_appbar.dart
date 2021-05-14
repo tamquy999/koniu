@@ -8,9 +8,12 @@ class CustomSilverAppbar extends StatelessWidget {
     return SliverAppBar(
       brightness: Brightness.light,
       backgroundColor: Colors.white,
-      title: Image.asset(
-        "assets/images/TextOnly.png",
-        height: 25.0,
+      title: Hero(
+        tag: "logo",
+        child: Image.asset(
+          "assets/images/TextOnly.png",
+          height: 25.0,
+        ),
       ),
       // title: Image(
       //   image: AssetImage("assets/images/TextOnly.png"),

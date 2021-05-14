@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_responsive_ui/bloc/authentication_bloc.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/data/data.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -150,7 +152,11 @@ class AccountScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20.0),
                   TextButton(
-                    onPressed: () => _makingPhoneCall(),
+                    onPressed: () {
+                      BlocProvider.of<AuthenticationBloc>(context)
+                          .add(LoggedOut());
+                      Navigator.pop(context);
+                    },
                     child: Text("Đăng xuất"),
                     style: ButtonStyle(
                       backgroundColor:
