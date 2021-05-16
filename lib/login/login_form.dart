@@ -11,6 +11,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -49,23 +50,104 @@ class _LoginFormState extends State<LoginForm> {
                         child: Hero(
                           tag: "logo",
                           child: Image.asset(
-                            "assets/images/IconOnly.png",
+                            "assets/images/Both.png",
                             fit: BoxFit.contain,
                           ),
                         ),
                       ),
-                      SizedBox(height: 30.0),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'Tên đăng nhập',
-                            icon: Icon(Icons.person)),
-                        controller: _usernameController,
+                      SizedBox(height: 50.0),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //       labelText: 'Tài khoản',
+                      //       icon: Icon(Icons.person_outline)),
+                      //   controller: _usernameController,
+                      // ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(50),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 25,
+                              offset: Offset(0, 5),
+                              spreadRadius: -25,
+                            ),
+                          ],
+                        ),
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          autofocus: false,
+                          controller: _usernameController,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 20),
+                            hintText: "Tài khoản",
+                            hintStyle: TextStyle(
+                              color: Color(0xffA6B0BD),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            prefixIcon: Icon(Icons.person_outline),
+                            prefixIconConstraints: BoxConstraints(
+                              minWidth: 75,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(50),
+                              ),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(50),
+                              ),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                          ),
+                        ),
                       ),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //     contentPadding:
+                      //         EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                      //     border: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(32.0)),
+                      //     labelText: 'Mật khẩu',
+                      //     // icon: Icon(Icons.lock_outline),
+                      //   ),
+                      //   controller: _passwordController,
+                      //   obscureText: true,
+                      // ),
+                      SizedBox(height: 20.0),
                       TextFormField(
-                        decoration: InputDecoration(
-                            labelText: 'Mật khẩu', icon: Icon(Icons.security)),
+                        autofocus: false,
+                        obscureText: _obscureText,
+                        keyboardType: TextInputType.text,
                         controller: _passwordController,
-                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          contentPadding:
+                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.0)),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                            child: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              semanticLabel: _obscureText
+                                  ? 'show password'
+                                  : 'hide password',
+                            ),
+                          ),
+                        ),
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.85,

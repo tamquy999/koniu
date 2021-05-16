@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
 import 'package:flutter_facebook_responsive_ui/repository/user_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -34,7 +37,17 @@ class AuthenticationBloc
     if (event is LoggedIn) {
       yield AuthenticationLoading();
 
-      await userRepository.persistToken(user: event.user);
+      if (kIsWeb) {
+        print("web");
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        // String token = await _getTokenFromHttp();
+        // await prefs.setInt('jwt', token);
+        //   await userRepository.persistToken(user: event.user);
+      } else {
+        print("android");
+        await userRepository.persistToken(user: event.user);
+      }
+
       yield AuthenticationAuthenticated();
     }
 

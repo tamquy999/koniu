@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'responsive.dart';
+
 class CustomMonthPicker extends StatelessWidget {
   final DateTime datetime;
   final Function sub;
@@ -14,15 +16,18 @@ class CustomMonthPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDesktop = Responsive.isDesktop(context);
     return SliverPadding(
-      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 5.0),
+      padding: !isDesktop
+          ? EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 5.0)
+          : EdgeInsets.all(0.0),
       sliver: SliverToBoxAdapter(
         child: Container(
           height: 40.0,
           decoration: BoxDecoration(
             // color: Colors.blue.shade50,
             color: Colors.white,
-            // borderRadius: BorderRadius.circular(20.0),
+            borderRadius: isDesktop ? BorderRadius.circular(10.0) : null,
           ),
           child: Row(
             children: [

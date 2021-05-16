@@ -21,7 +21,7 @@ class MealContainer extends StatelessWidget {
     return Card(
       margin: EdgeInsets.symmetric(
         vertical: 5.0,
-        horizontal: isDesktop ? 5.0 : 0.0,
+        // horizontal: isDesktop ? 5.0 : 0.0,
       ),
       elevation: isDesktop ? 1.0 : 0.0,
       shape: isDesktop

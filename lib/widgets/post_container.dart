@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class PostContainer extends StatelessWidget {
     return Card(
       margin: EdgeInsets.symmetric(
         vertical: 5.0,
-        horizontal: isDesktop ? 5.0 : 0.0,
+        // horizontal: isDesktop ? 5.0 : 0.0,
       ),
       elevation: isDesktop ? 1.0 : 0.0,
       shape: isDesktop
@@ -37,7 +38,7 @@ class PostContainer extends StatelessWidget {
           : null,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
-        color: Colors.white,
+        // color: Colors.white,
         child: Column(
           children: [
             Padding(
@@ -71,18 +72,25 @@ class PostContainer extends StatelessWidget {
                                   children: [
                                     CachedNetworkImage(
                                       imageUrl: post.inImg,
-                                      height: 200.0,
+                                      height: isDesktop ? 400.0 : 200.0,
                                       fit: BoxFit.cover,
                                     ),
-                                    Container(
-                                      color: Palette.koniuBlue.withOpacity(0.7),
-                                      height: 30.0,
-                                      child: Center(
-                                        child: Text(
-                                          "7:30",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16.0),
+                                    ClipRect(
+                                      child: BackdropFilter(
+                                        filter: new ImageFilter.blur(
+                                            sigmaX: 10.0, sigmaY: 10.0),
+                                        child: Container(
+                                          color: Palette.koniuBlue
+                                              .withOpacity(0.5),
+                                          height: isDesktop ? 50.0 : 30.0,
+                                          child: Center(
+                                            child: Text(
+                                              "Đến: 7:30",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16.0),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -115,18 +123,25 @@ class PostContainer extends StatelessWidget {
                                   children: [
                                     CachedNetworkImage(
                                       imageUrl: post.inImg,
-                                      height: 200.0,
+                                      height: isDesktop ? 400.0 : 200.0,
                                       fit: BoxFit.cover,
                                     ),
-                                    Container(
-                                      color: Palette.koniuBlue.withOpacity(0.7),
-                                      height: 30.0,
-                                      child: Center(
-                                        child: Text(
-                                          "7:30",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16.0),
+                                    ClipRect(
+                                      child: BackdropFilter(
+                                        filter: new ImageFilter.blur(
+                                            sigmaX: 10.0, sigmaY: 10.0),
+                                        child: Container(
+                                          color: Palette.koniuBlue
+                                              .withOpacity(0.5),
+                                          height: isDesktop ? 50.0 : 30.0,
+                                          child: Center(
+                                            child: Text(
+                                              "Về: 16:30",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16.0),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),

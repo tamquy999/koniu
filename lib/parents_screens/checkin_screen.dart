@@ -50,7 +50,23 @@ class _CheckinScreenState extends State<CheckinScreen> {
             },
           ),
           desktop: _CheckinScreenDesktop(
-              scrollController: _trackingScrollController),
+            scrollController: _trackingScrollController,
+            datetime: _now,
+            sub: () {
+              setState(() {
+                DateTime _month = new DateTime(_now.year, _now.month - 1);
+                _now = _month;
+                // print(_now);
+              });
+            },
+            add: () {
+              setState(() {
+                DateTime _month = new DateTime(_now.year, _now.month + 1);
+                _now = _month;
+                // print(_now);
+              });
+            },
+          ),
         ),
       ),
     );
@@ -94,10 +110,16 @@ class _CheckinScreenMobile extends StatelessWidget {
 
 class _CheckinScreenDesktop extends StatelessWidget {
   final TrackingScrollController scrollController;
+  final DateTime datetime;
+  final Function sub;
+  final Function add;
 
   const _CheckinScreenDesktop({
     Key key,
     @required this.scrollController,
+    this.datetime,
+    this.sub,
+    this.add,
   }) : super(key: key);
 
   @override
@@ -112,17 +134,15 @@ class _CheckinScreenDesktop extends StatelessWidget {
         ),
         const Spacer(),
         Container(
-          width: 600.0,
+          width: 800.0,
           child: CustomScrollView(
             controller: scrollController,
             slivers: [
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 10.0),
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
                 sliver: SliverToBoxAdapter(),
               ),
-              SliverToBoxAdapter(
-                child: CreatePostContainer(currentUser: currentUser),
-              ),
+              CustomMonthPicker(datetime: datetime, sub: sub, add: add),
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 5.0),
                 sliver: SliverToBoxAdapter(),

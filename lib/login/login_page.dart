@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_responsive_ui/bloc/authentication_bloc.dart';
 import 'package:flutter_facebook_responsive_ui/login/bloc/login_bloc.dart';
 import 'package:flutter_facebook_responsive_ui/login/login_form.dart';
+import 'package:flutter_facebook_responsive_ui/login/test.dart';
 import 'package:flutter_facebook_responsive_ui/repository/user_repository.dart';
 
 class LoginPage extends StatelessWidget {
@@ -26,7 +27,7 @@ class LoginPage extends StatelessWidget {
             userRepository: userRepository,
           );
         },
-        child: LoginForm(),
+        child: LoginTest(),
       ),
     );
   }

@@ -22,7 +22,7 @@ class ActivityContainer extends StatelessWidget {
     return Card(
       margin: EdgeInsets.symmetric(
         vertical: 5.0,
-        horizontal: isDesktop ? 5.0 : 0.0,
+        // horizontal: isDesktop ? 5.0 : 0.0,
       ),
       elevation: isDesktop ? 1.0 : 0.0,
       shape: isDesktop
@@ -30,7 +30,7 @@ class ActivityContainer extends StatelessWidget {
           : null,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
-        color: Colors.white,
+        // color: Colors.white,
         child: Column(
           children: [
             Padding(

@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
@@ -48,7 +50,7 @@ class CustomAppBar extends StatelessWidget {
           )),
           Container(
             height: double.infinity,
-            width: 600.0,
+            width: 800.0,
             child: CustomTabBar(
               icons: icons,
               selectedIndex: selectedIndex,
@@ -60,17 +62,41 @@ class CustomAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const SizedBox(width: 12.0),
-                CircleButton(
-                  icon: Icons.search,
-                  iconSize: 30.0,
-                  onPressed: () => print('Search'),
-                ),
-                CircleButton(
-                  icon: MdiIcons.facebookMessenger,
-                  iconSize: 30.0,
-                  onPressed: () => print('Messenger'),
-                ),
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () => print("abc"),
+                    child: Container(
+                      // color: Colors.amber,
+                      child: Row(
+                        children: [
+                          Text(
+                            currentUser.name,
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                          SizedBox(width: 15.0),
+                          CachedNetworkImage(
+                            imageUrl:
+                                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: 50.0,
+                              height: 50.0,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
+                              ),
+                            ),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),

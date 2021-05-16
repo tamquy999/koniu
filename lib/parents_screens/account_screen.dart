@@ -20,6 +20,7 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.0,
         iconTheme: IconThemeData(
           color: Colors.black45, //change your color here
         ),

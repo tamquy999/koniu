@@ -16,14 +16,14 @@ class _NavScreenState extends State<NavScreen> {
     ActivityScreen(),
     MealScreen(),
     HealthScreen(),
-    Scaffold(),
+    // Scaffold(),
   ];
   final List<IconData> _icons = const [
     Icons.pin_drop_outlined,
     MdiIcons.formatListChecks,
     MdiIcons.foodDrumstickOutline,
     MdiIcons.heartOutline,
-    MdiIcons.messageTextOutline
+    // MdiIcons.messageTextOutline
   ];
   int _selectedIndex = 0;
 
