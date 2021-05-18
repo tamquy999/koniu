@@ -36,9 +36,12 @@ class CustomMonthPicker extends StatelessWidget {
               ),
               InkWell(
                 // margin: EdgeInsets.symmetric(horizontal: 10.0),
-                child: Icon(
-                  Icons.arrow_back_ios_outlined,
-                  color: Colors.black45,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.arrow_back_ios_outlined,
+                    color: Colors.black45,
+                  ),
                 ),
                 onTap: sub,
               ),
@@ -56,15 +59,21 @@ class CustomMonthPicker extends StatelessWidget {
               datetime.month < DateTime.now().month
                   ? InkWell(
                       // margin: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: Colors.black45,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          color: Colors.black45,
+                        ),
                       ),
                       onTap: add,
                     )
-                  : Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      color: Colors.black12,
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Colors.black12,
+                      ),
                     ),
               Padding(
                 padding: EdgeInsets.all(5.0),

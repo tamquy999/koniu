@@ -183,6 +183,20 @@ class _PostHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _showPopupMenu(Offset offset) async {
+      double left = offset.dx;
+      double top = offset.dy;
+      await showMenu(
+        context: context,
+        position: RelativeRect.fromLTRB(left, top, 0, 0),
+        items: [
+          PopupMenuItem<String>(child: AccountScreen(), value: 'Doge'),
+          PopupMenuItem<String>(child: const Text('Lion'), value: 'Lion'),
+        ],
+        elevation: 8.0,
+      );
+    }
+
     return Row(
       children: [
         ProfileAvatar(imageUrl: post.kid.imageUrl),
@@ -211,9 +225,11 @@ class _PostHeader extends StatelessWidget {
             ],
           ),
         ),
-        IconButton(
-          icon: const Icon(Icons.more_horiz),
-          onPressed: () => print('More'),
+        GestureDetector(
+          child: const Icon(Icons.more_horiz),
+          onTapDown: (TapDownDetails details) {
+            _showPopupMenu(details.globalPosition);
+          },
         ),
       ],
     );
