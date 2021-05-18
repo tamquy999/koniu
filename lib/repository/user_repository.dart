@@ -4,6 +4,7 @@ import 'package:flutter_facebook_responsive_ui/dao/user_dao.dart';
 import 'package:flutter_facebook_responsive_ui/models/api_model.dart';
 import 'package:flutter_facebook_responsive_ui/models/user_model.dart';
 import 'package:meta/meta.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
 class UserRepository {
   final userDao = UserDao();
@@ -14,10 +15,16 @@ class UserRepository {
   }) async {
     UserLogin userLogin = UserLogin(username: username, password: password);
     Token token = await getToken(userLogin);
+
+    Map<String, dynamic> payload = Jwt.parseJwt(token.token);
+    int userid = payload['id'];
+    int quyen = payload['id'];
+
     User user = User(
-      id: 0,
+      id: userid,
       username: username,
       token: token.token,
+      quyen: quyen,
     );
     return user;
   }
