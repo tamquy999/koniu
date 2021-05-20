@@ -21,3 +21,15 @@ class Token {
     return Token(token: json['access_token']);
   }
 }
+
+class UploadedImage {
+  String linkImg;
+
+  UploadedImage({
+    this.linkImg,
+  });
+
+  factory UploadedImage.fromJson(Map<String, dynamic> json) => UploadedImage(
+        linkImg: json['ImageName'],
+      );
+}
