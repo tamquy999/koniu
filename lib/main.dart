@@ -96,10 +96,10 @@ class App extends StatelessWidget {
             return NavScreen();
           }
           if (state is AuthenticationUnauthenticated) {
-            // return LoginPage(
-            //   userRepository: userRepository,
-            // );
-            return NavScreen();
+            return LoginPage(
+              userRepository: userRepository,
+            );
+            // return NavScreen();
           }
           if (state is AuthenticationLoading) {
             return LoadingIndicator();
