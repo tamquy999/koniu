@@ -99,7 +99,7 @@ class App extends StatelessWidget {
             // return LoginPage(
             //   userRepository: userRepository,
             // );
-            return NavScreenTeacher();
+            return NavScreen();
           }
           if (state is AuthenticationLoading) {
             return LoadingIndicator();

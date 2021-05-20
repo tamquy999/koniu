@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
@@ -73,7 +75,7 @@ class _CheckinScreenState extends State<CheckinScreen> {
   }
 }
 
-class _CheckinScreenMobile extends StatelessWidget {
+class _CheckinScreenMobile extends StatefulWidget {
   final TrackingScrollController scrollController;
   final DateTime datetime;
   final Function sub;
@@ -88,22 +90,43 @@ class _CheckinScreenMobile extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  __CheckinScreenMobileState createState() => __CheckinScreenMobileState();
+}
+
+class __CheckinScreenMobileState extends State<_CheckinScreenMobile> {
+  List<Post> _monthPosts = posts;
+
+  Future<String> reloadList() async {
+    setState(() {
+      _monthPosts = posts;
+    });
+    print("reload");
+    return "success";
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: scrollController,
-      slivers: [
-        CustomSilverAppbar(),
-        CustomMonthPicker(datetime: datetime, sub: sub, add: add),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final Post post = posts[index];
-              return PostContainer(post: post);
-            },
-            childCount: posts.length,
+    return RefreshIndicator(
+      child: CustomScrollView(
+        controller: widget.scrollController,
+        slivers: [
+          CustomSilverAppbar(),
+          CustomMonthPicker(
+              datetime: widget.datetime, sub: widget.sub, add: widget.add),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final Post post = _monthPosts[index];
+                return PostContainer(post: post);
+              },
+              childCount: posts.length,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
+      onRefresh: () {
+        return reloadList();
+      },
     );
   }
 }
