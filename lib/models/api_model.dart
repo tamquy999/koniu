@@ -17,3 +17,13 @@ class Token {
     return Token(token: json['token']);
   }
 }
+
+class ImageName {
+  String imageName;
+
+  ImageName({this.imageName});
+
+  factory ImageName.fromJson(Map<String, dynamic> json) {
+    return ImageName(imageName: json['ImageName']);
+  }
+}

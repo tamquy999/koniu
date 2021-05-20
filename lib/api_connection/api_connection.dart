@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_facebook_responsive_ui/models/api_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,4 +23,23 @@ Future<Token> getToken(UserLogin userLogin) async {
     print(json.decode(response.body).toString());
     throw Exception(json.decode(response.body));
   }
+}
+
+Future<ImageName> uploadImage(File image) async {
+  //create multipart request for POST or PATCH method
+  var request = http.MultipartRequest(
+      "POST", Uri.parse("http://103.81.86.241:2812/api/upload/image"));
+  //add text fields
+  //  request.fields["text_field"] = text;
+  //create multipart using filepath, string or bytes
+  var pic = await http.MultipartFile.fromPath("image", image.path);
+  //add multipart to request
+  request.files.add(pic);
+  var response = await request.send();
+
+  //Get the response from the server
+  var responseData = await response.stream.toBytes();
+  var responseString = String.fromCharCodes(responseData);
+  // print(responseString);
+  return ImageName.fromJson(json.decode(responseString));
 }
