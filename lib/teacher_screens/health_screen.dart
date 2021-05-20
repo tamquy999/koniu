@@ -1,31 +1,24 @@
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/data/data.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
-import 'package:flutter_facebook_responsive_ui/parents_screens/screens.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/custom_silver_appbar.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class CheckinScreen extends StatefulWidget {
+class HealthScreen extends StatefulWidget {
   @override
-  _CheckinScreenState createState() => _CheckinScreenState();
+  _HealthScreenState createState() => _HealthScreenState();
 }
 
-class _CheckinScreenState extends State<CheckinScreen> {
+class _HealthScreenState extends State<HealthScreen> {
   final TrackingScrollController _trackingScrollController =
       TrackingScrollController();
 
   DateTime _now = DateTime.now();
 
-  @override
-  void dispose() {
-    _trackingScrollController.dispose();
-    super.dispose();
-  }
+  Health health = currentHealth;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +26,9 @@ class _CheckinScreenState extends State<CheckinScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         body: Responsive(
-          mobile: _CheckinScreenMobile(
+          mobile: _MobileHealthScreen(
             scrollController: _trackingScrollController,
+            health: health,
             datetime: _now,
             sub: () {
               setState(() {
@@ -51,8 +45,9 @@ class _CheckinScreenState extends State<CheckinScreen> {
               });
             },
           ),
-          desktop: _CheckinScreenDesktop(
+          desktop: _DesktopHealthScreen(
             scrollController: _trackingScrollController,
+            health: health,
             datetime: _now,
             sub: () {
               setState(() {
@@ -75,78 +70,95 @@ class _CheckinScreenState extends State<CheckinScreen> {
   }
 }
 
-class _CheckinScreenMobile extends StatefulWidget {
+class _MobileHealthScreen extends StatelessWidget {
   final TrackingScrollController scrollController;
+  final Health health;
   final DateTime datetime;
   final Function sub;
   final Function add;
 
-  const _CheckinScreenMobile({
+  const _MobileHealthScreen({
     Key key,
     @required this.scrollController,
+    @required this.health,
     @required this.datetime,
     @required this.sub,
     @required this.add,
   }) : super(key: key);
 
   @override
-  __CheckinScreenMobileState createState() => __CheckinScreenMobileState();
-}
-
-class __CheckinScreenMobileState extends State<_CheckinScreenMobile> {
-  List<Post> _monthPosts = posts;
-
-  Future<String> reloadList() async {
-    setState(() {
-      _monthPosts = posts;
-    });
-    print("reload");
-    return "success";
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      child: CustomScrollView(
-        controller: widget.scrollController,
-        slivers: [
-          CustomSilverAppbar(),
-          CustomMonthPicker(
-              datetime: widget.datetime, sub: widget.sub, add: widget.add),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final Post post = _monthPosts[index];
-                return PostContainer(post: post);
-              },
-              childCount: posts.length,
-            ),
+    final Health lasthealth = lastHealth;
+    // final Health health = currentHealth;
+
+    return CustomScrollView(
+      controller: scrollController,
+      slivers: [
+        CustomSilverAppbar(),
+        CustomMonthPicker(datetime: datetime, sub: sub, add: add),
+        // SliverList(
+        //   delegate: SliverChildBuilderDelegate(
+        //     (context, index) {
+        //       final Health activity = activities[index];
+        //       return HealthContainer(activity: activity);
+        //     },
+        //     childCount: healths.length,
+        //   ),
+        // ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final Health health = healths[index];
+              return HealthTeacherContainer(
+                datetime: datetime,
+                health: health,
+                lasthealth: lasthealth,
+              );
+            },
+            childCount: posts.length,
           ),
-        ],
-      ),
-      onRefresh: () {
-        return reloadList();
-      },
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: datetime.month > DateTime.now().month
+              ? Center(
+                  child: Text(
+                    "Chưa có thông tin sức khỏe tháng này",
+                    style: TextStyle(color: Colors.black26),
+                  ),
+                )
+              : HealthTeacherContainer(
+                  datetime: datetime,
+                  health: health,
+                  lasthealth: lasthealth,
+                ),
+        ),
+      ],
     );
   }
 }
 
-class _CheckinScreenDesktop extends StatelessWidget {
+class _DesktopHealthScreen extends StatelessWidget {
   final TrackingScrollController scrollController;
+  final Health health;
   final DateTime datetime;
   final Function sub;
   final Function add;
 
-  const _CheckinScreenDesktop({
-    Key key,
-    @required this.scrollController,
-    this.datetime,
-    this.sub,
-    this.add,
-  }) : super(key: key);
+  const _DesktopHealthScreen(
+      {Key key,
+      this.scrollController,
+      this.health,
+      this.datetime,
+      this.sub,
+      this.add})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Health lasthealth = lastHealth;
+    final Health health = currentHealth;
+
     return Row(
       children: [
         Flexible(
@@ -170,14 +182,20 @@ class _CheckinScreenDesktop extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 5.0),
                 sliver: SliverToBoxAdapter(),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final Post post = posts[index];
-                    return PostContainer(post: post);
-                  },
-                  childCount: posts.length,
-                ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: datetime.month >= DateTime.now().month
+                    ? Center(
+                        child: Text(
+                          "Chưa có thông tin sức khỏe tháng này",
+                          style: TextStyle(color: Colors.black26),
+                        ),
+                      )
+                    : HealthTeacherContainer(
+                        datetime: datetime,
+                        health: health,
+                        lasthealth: lasthealth,
+                      ),
               ),
             ],
           ),

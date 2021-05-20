@@ -200,3 +200,30 @@ final Health lastHealth = Health(
     kid: currentUser, month: "04/2021", height: 114.5, weight: 21.2, bmi: 16.2);
 final Health currentHealth = Health(
     kid: currentUser, month: "05/2021", height: 115.0, weight: 21.5, bmi: 16.3);
+
+final List<Health> healths = [
+  Health(
+      kid: currentUser,
+      month: "04/2021",
+      height: 114.5,
+      weight: 21.2,
+      bmi: 16.2),
+  Health(
+      kid: currentUser,
+      month: "05/2021",
+      height: 115.0,
+      weight: 21.5,
+      bmi: 16.3),
+  Health(
+      kid: currentUser,
+      month: "04/2021",
+      height: 114.5,
+      weight: 21.2,
+      bmi: 16.2),
+  Health(
+      kid: currentUser,
+      month: "05/2021",
+      height: 115.0,
+      weight: 21.5,
+      bmi: 16.3),
+];

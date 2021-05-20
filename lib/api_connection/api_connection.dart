@@ -46,4 +46,22 @@ Future<UploadedImage> uploadImage(File image) async {
   } else {
     throw Exception(json.decode(res.body));
   }
+
+Future<ImageName> uploadImage2(File image) async {
+  //create multipart request for POST or PATCH method
+  var request = http.MultipartRequest(
+      "POST", Uri.parse("http://103.81.86.241:2812/api/upload/image"));
+  //add text fields
+  //  request.fields["text_field"] = text;
+  //create multipart using filepath, string or bytes
+  var pic = await http.MultipartFile.fromPath("image", image.path);
+  //add multipart to request
+  request.files.add(pic);
+  var response = await request.send();
+
+  //Get the response from the server
+  var responseData = await response.stream.toBytes();
+  var responseString = String.fromCharCodes(responseData);
+  // print(responseString);
+  return ImageName.fromJson(json.decode(responseString));
 }

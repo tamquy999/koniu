@@ -29,6 +29,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_responsive_ui/login/login_page.dart';
 import 'package:flutter_facebook_responsive_ui/parents_screens/nav_screen.dart';
+import 'package:flutter_facebook_responsive_ui/teacher_screens/nav_screen.dart';
 
 import 'bloc/authentication_bloc.dart';
 import 'config/palette.dart';
