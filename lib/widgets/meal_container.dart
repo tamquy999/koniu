@@ -4,7 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
+import 'package:flutter_facebook_responsive_ui/widgets/weekday_translator.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MealContainer extends StatelessWidget {
@@ -18,6 +20,7 @@ class MealContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isDesktop = Responsive.isDesktop(context);
+
     return Card(
       margin: EdgeInsets.symmetric(
         vertical: 5.0,
@@ -41,7 +44,8 @@ class MealContainer extends StatelessWidget {
             Container(
               alignment: Alignment.topLeft,
               child: Text(
-                meal.date,
+                weekdayToVietnamese(meal.ngay.weekday) +
+                    Jiffy(meal.ngay).format(", dd/MM/yyyy"),
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w900),
               ),
             ),
@@ -73,7 +77,7 @@ class MealContainer extends StatelessWidget {
                     margin: EdgeInsets.all(10.0),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      meal.breakfast,
+                      meal.bSang,
                       // style: TextStyle(fontSize: 15.0),
                     ),
                   ),
@@ -111,7 +115,7 @@ class MealContainer extends StatelessWidget {
                     margin: EdgeInsets.all(10.0),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      meal.lunch,
+                      meal.bTrua,
                       // style: TextStyle(fontSize: 15.0),
                     ),
                   ),
@@ -146,7 +150,7 @@ class MealContainer extends StatelessWidget {
                     margin: EdgeInsets.all(10.0),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      meal.tea,
+                      meal.bToi,
                       // style: TextStyle(fontSize: 15.0),
                     ),
                   ),

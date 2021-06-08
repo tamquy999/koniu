@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_responsive_ui/config/palette.dart';
+import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'bloc/login_bloc.dart';
@@ -33,66 +35,53 @@ class _LoginTestState extends State<LoginTest> {
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
-          return SingleChildScrollView(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              color: Color(0xFFfafafa),
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _logo(),
-                  // _logoText(),
-                  _inputField(
-                      Icon(Icons.person_outline,
-                          size: 30, color: Color(0xffA6B0BD)),
-                      "Tài khoản",
-                      false,
-                      _usernameController),
-                  _inputField(
-                      Icon(Icons.lock_outline,
-                          size: 30, color: Color(0xffA6B0BD)),
-                      "Mật khẩu",
-                      true,
-                      _passwordController),
-                  //_loginBtn(state, _onLoginButtonPressed()),
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.only(top: 20, bottom: 30),
-                    decoration: BoxDecoration(
-                        color: Color(0xff008FFF),
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x60008FFF),
-                            blurRadius: 10,
-                            offset: Offset(0, 5),
-                            spreadRadius: 0,
-                          ),
-                        ]),
-                    child: FlatButton(
-                      onPressed:
-                          state is! LoginLoading ? _onLoginButtonPressed : null,
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        "Đăng nhập",
-                        style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                            letterSpacing: 2,
-                          ),
-                        ),
-                      ),
-                    ),
+          final bool isDesktop = Responsive.isDesktop(context);
+          return Center(
+            child: SingleChildScrollView(
+              child: Card(
+                color: Color(0xFFfafafa),
+                // shadowColor: Colors.pink.shade100,
+                shadowColor: Colors.white,
+                elevation: isDesktop ? 100.0 : 0.0,
+                shape: isDesktop
+                    ? RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0))
+                    : null,
+                child: Container(
+                  height:
+                      isDesktop ? 600.0 : MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  // color: Color(0xFFfafafa),
+                  width: isDesktop ? 500.0 : double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _logo(),
+                      // _logoText(),
+                      _inputField(
+                          Icon(Icons.person_outline,
+                              size: 30, color: Color(0xffA6B0BD)),
+                          "Tài khoản",
+                          false,
+                          _usernameController,
+                          state,
+                          _onLoginButtonPressed),
+                      _inputField(
+                          Icon(Icons.lock_outline,
+                              size: 30, color: Color(0xffA6B0BD)),
+                          "Mật khẩu",
+                          true,
+                          _passwordController,
+                          state,
+                          _onLoginButtonPressed),
+                      _loginBtn(state, _onLoginButtonPressed),
+                      _dontHaveAcnt(),
+                      _signUp(),
+                      // _terms(),
+                    ],
                   ),
-                  _dontHaveAcnt(),
-                  _signUp(),
-                  // _terms(),
-                ],
+                ),
               ),
             ),
           );
@@ -183,8 +172,13 @@ Widget _loginBtn(LoginState state, Function _onLoginButtonPressed) {
   );
 }
 
-Widget _inputField(Icon prefixIcon, String hintText, bool isPassword,
-    TextEditingController _controller) {
+Widget _inputField(
+    Icon prefixIcon,
+    String hintText,
+    bool isPassword,
+    TextEditingController _controller,
+    LoginState state,
+    Function _onLoginButtonPressed) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(
@@ -203,6 +197,8 @@ Widget _inputField(Icon prefixIcon, String hintText, bool isPassword,
     child: TextField(
       controller: _controller,
       obscureText: isPassword,
+      onSubmitted: (value) =>
+          state is! LoginLoading ? _onLoginButtonPressed : null,
       style: GoogleFonts.montserrat(
         textStyle: TextStyle(
           fontSize: 16,

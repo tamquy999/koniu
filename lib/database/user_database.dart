@@ -44,6 +44,7 @@ class DatabaseProvider {
   void initDB(Database database, int version) async {
     await database.execute("CREATE TABLE $userTable ("
         "id INTEGER PRIMARY KEY, "
+        "userid INTEGER, "
         "username TEXT, "
         "access_token TEXT ,"
         "quyen INTEGER"

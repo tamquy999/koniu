@@ -3,12 +3,16 @@ class UserLogin {
   String password;
   int quyen;
 
-  UserLogin({this.username, this.password, this.quyen = 0});
+  UserLogin({
+    this.username,
+    this.password,
+    // this.quyen = 0,
+  });
 
   Map<String, dynamic> toDatabaseJson() => {
         "username": this.username,
         "password": this.password,
-        "quyen": this.quyen,
+        // "quyen": this.quyen,
       };
 }
 
@@ -30,15 +34,16 @@ class UploadedImage {
   });
 
   factory UploadedImage.fromJson(Map<String, dynamic> json) => UploadedImage(
-        linkImg: json['ImageName'],
+        linkImg: json['ImageU'],
       );
 }
+
 class ImageName {
   String imageName;
 
   ImageName({this.imageName});
 
   factory ImageName.fromJson(Map<String, dynamic> json) {
-    return ImageName(imageName: json['ImageName']);
+    return ImageName(imageName: json['ImageU']);
   }
 }

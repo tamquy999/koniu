@@ -56,7 +56,8 @@ class CustomMonthPicker extends StatelessWidget {
                   ),
                 ),
               ),
-              datetime.month < DateTime.now().month
+              datetime.month < DateTime.now().month ||
+                      datetime.year < DateTime.now().year
                   ? InkWell(
                       // margin: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Padding(

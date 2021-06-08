@@ -56,7 +56,9 @@ class CustomDatePicker extends StatelessWidget {
                   ),
                 ),
               ),
-              datetime.day < DateTime.now().day
+              datetime.day < DateTime.now().day ||
+                      datetime.month < DateTime.now().month ||
+                      datetime.year < DateTime.now().year
                   ? InkWell(
                       // margin: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Padding(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/data/data.dart';
-import 'package:flutter_facebook_responsive_ui/parents_screens/health_screen.dart';
-import 'package:flutter_facebook_responsive_ui/parents_screens/screens.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import 'screens.dart';
 
 class NavScreen extends StatefulWidget {
   @override
@@ -37,7 +37,6 @@ class _NavScreenState extends State<NavScreen> {
             ? PreferredSize(
                 preferredSize: Size(screenSize.width, 100.0),
                 child: CustomAppBar(
-                  currentUser: currentUser,
                   icons: _icons,
                   selectedIndex: _selectedIndex,
                   onTap: (index) => setState(() => _selectedIndex = index),

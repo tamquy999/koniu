@@ -9,7 +9,7 @@ import 'package:jwt_decode/jwt_decode.dart';
 class UserRepository {
   final userDao = UserDao();
 
-  Future<User> authenticate({
+  Future<DbUser> authenticate({
     @required String username,
     @required String password,
   }) async {
@@ -20,8 +20,9 @@ class UserRepository {
     int userid = payload['id'];
     int quyen = payload['id'];
 
-    User user = User(
-      id: userid,
+    DbUser user = DbUser(
+      id: 0,
+      userid: userid,
       username: username,
       token: token.token,
       quyen: quyen,
@@ -29,7 +30,7 @@ class UserRepository {
     return user;
   }
 
-  Future<void> persistToken({@required User user}) async {
+  Future<void> persistToken({@required DbUser user}) async {
     // write token with the user to the database
     await userDao.createUser(user);
   }
@@ -40,6 +41,17 @@ class UserRepository {
 
   Future<bool> hasToken() async {
     bool result = await userDao.checkUser(0);
+    print("dao" + result.toString());
+    return result;
+  }
+
+  Future<int> getPermission() async {
+    int result = await userDao.getUserPermission(0);
+    return result;
+  }
+
+  Future<String> getUserToken() async {
+    String result = await userDao.getUserToken(0);
     return result;
   }
 }

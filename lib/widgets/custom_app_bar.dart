@@ -1,24 +1,39 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_facebook_responsive_ui/api_connection/api_connection.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
+import 'package:flutter_facebook_responsive_ui/screens/account_screen.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class CustomAppBar extends StatelessWidget {
-  final Kid currentUser;
+class CustomAppBar extends StatefulWidget {
   final List<IconData> icons;
   final int selectedIndex;
   final Function(int) onTap;
 
   const CustomAppBar({
     Key key,
-    @required this.currentUser,
     @required this.icons,
     @required this.selectedIndex,
     @required this.onTap,
   }) : super(key: key);
+  @override
+  _CustomAppBarState createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  User currentUser;
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUser().then((value) {
+      currentUser = value;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +67,9 @@ class CustomAppBar extends StatelessWidget {
             height: double.infinity,
             width: 800.0,
             child: CustomTabBar(
-              icons: icons,
-              selectedIndex: selectedIndex,
-              onTap: onTap,
+              icons: widget.icons,
+              selectedIndex: widget.selectedIndex,
+              onTap: widget.onTap,
               isBottomIndicator: true,
             ),
           ),
@@ -65,35 +80,45 @@ class CustomAppBar extends StatelessWidget {
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
-                    onTap: () => print("abc"),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => AccountScreen(),
+                        ),
+                      );
+                    },
                     child: Container(
-                      // color: Colors.amber,
-                      child: Row(
-                        children: [
-                          Text(
-                            currentUser.name,
-                            style: TextStyle(fontSize: 16.0),
-                          ),
-                          SizedBox(width: 15.0),
-                          CachedNetworkImage(
-                            imageUrl:
-                                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-                            imageBuilder: (context, imageProvider) => Container(
-                              width: 50.0,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image: imageProvider, fit: BoxFit.cover),
-                              ),
+                      color: Colors.white,
+                      child: currentUser == null
+                          ? LoadingIndicator()
+                          : Row(
+                              children: [
+                                Text(
+                                  currentUser.hoten,
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                                SizedBox(width: 15.0),
+                                CachedNetworkImage(
+                                  imageUrl: currentUser.avturl,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
+                              ],
                             ),
-                            placeholder: (context, url) =>
-                                CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 )

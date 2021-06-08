@@ -28,12 +28,12 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_responsive_ui/login/login_page.dart';
-import 'package:flutter_facebook_responsive_ui/parents_screens/nav_screen.dart';
-import 'package:flutter_facebook_responsive_ui/teacher_screens/nav_screen.dart';
 
 import 'bloc/authentication_bloc.dart';
 import 'config/palette.dart';
 import 'repository/user_repository.dart';
+import 'screens/parents_screens/nav_screen.dart';
+import 'screens/teacher_screens/screens.dart';
 import 'widgets/widgets.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
@@ -92,8 +92,11 @@ class App extends StatelessWidget {
               ),
             );
           }
-          if (state is AuthenticationAuthenticated) {
+          if (state is AuthenticationAuthenticated_PH) {
             return NavScreen();
+          }
+          if (state is AuthenticationAuthenticated_GV) {
+            return NavScreenTeacher();
           }
           if (state is AuthenticationUnauthenticated) {
             return LoginPage(

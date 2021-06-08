@@ -5,12 +5,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
-import 'package:flutter_facebook_responsive_ui/parents_screens/screens.dart';
+import 'package:flutter_facebook_responsive_ui/screens/account_screen.dart';
+import 'package:flutter_facebook_responsive_ui/screens/fullscreen_image.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class PostContainer extends StatelessWidget {
-  final Post post;
+  final Post2 post;
 
   const PostContainer({
     Key key,
@@ -19,13 +21,6 @@ class PostContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _chars = 'abcdefghijklmnopqrstuvwxyz';
-    Random _rnd = Random();
-
-    String getRandomString(int length) =>
-        String.fromCharCodes(Iterable.generate(
-            length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-
     final bool isDesktop = Responsive.isDesktop(context);
     return Card(
       margin: EdgeInsets.symmetric(
@@ -50,116 +45,200 @@ class PostContainer extends StatelessWidget {
                   const SizedBox(height: 4.0),
                   // Text(post.caption),
                   const SizedBox(height: 8.0),
-                  post.inImg != null
+                  post.diDenImgUrl != null
                       ? const SizedBox.shrink()
                       : const SizedBox(height: 6.0),
                 ],
               ),
             ),
-            post.inImg != null
+            post.diDenImgUrl != null
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Container(
                       child: Row(
                         children: [
                           Expanded(
-                            child: GestureDetector(
-                              child: Hero(
-                                tag: "abcd",
-                                child: Stack(
-                                  fit: StackFit.passthrough,
-                                  alignment: AlignmentDirectional.bottomStart,
-                                  children: [
-                                    CachedNetworkImage(
-                                      imageUrl: post.inImg,
-                                      height: isDesktop ? 400.0 : 200.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    ClipRect(
-                                      child: BackdropFilter(
-                                        filter: new ImageFilter.blur(
-                                            sigmaX: 10.0, sigmaY: 10.0),
-                                        child: Container(
-                                          color: Palette.koniuBlue
-                                              .withOpacity(0.5),
-                                          height: isDesktop ? 50.0 : 30.0,
-                                          child: Center(
-                                            child: Text(
-                                              "Đến: 7:30",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16.0),
+                            child: post.thoiGianDen == ""
+                                ? Stack(
+                                    fit: StackFit.passthrough,
+                                    alignment: AlignmentDirectional.bottomStart,
+                                    children: [
+                                      Container(
+                                        color: Colors.black26,
+                                        height: isDesktop ? 400.0 : 200.0,
+                                        child: Icon(
+                                          MdiIcons.clockOutline,
+                                          size: 50.0,
+                                          color: Colors.black38,
+                                        ),
+                                      ),
+                                      ClipRect(
+                                        child: BackdropFilter(
+                                          filter: new ImageFilter.blur(
+                                              sigmaX: 10.0, sigmaY: 10.0),
+                                          child: Container(
+                                            color: Palette.koniuBlue
+                                                .withOpacity(0.5),
+                                            height: isDesktop ? 50.0 : 30.0,
+                                            child: Center(
+                                              child: Text(
+                                                "Đến: --:--:--",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.0),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
+                                    ],
+                                  )
+                                : GestureDetector(
+                                    child: Hero(
+                                      tag: post.diDenImgUrl,
+                                      child: Stack(
+                                        fit: StackFit.passthrough,
+                                        alignment:
+                                            AlignmentDirectional.bottomStart,
+                                        children: [
+                                          CachedNetworkImage(
+                                            imageUrl: post.diDenImgUrl,
+                                            height: isDesktop ? 400.0 : 200.0,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                          ),
+                                          ClipRect(
+                                            child: BackdropFilter(
+                                              filter: new ImageFilter.blur(
+                                                  sigmaX: 10.0, sigmaY: 10.0),
+                                              child: Container(
+                                                color: Palette.koniuBlue
+                                                    .withOpacity(0.5),
+                                                height: isDesktop ? 50.0 : 30.0,
+                                                child: Center(
+                                                  child: Text(
+                                                    "Đến: ${post.thoiGianDen}",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16.0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) {
-                                      return FullscreenImage(
-                                          tag: "abc", url: post.inImg);
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) {
+                                            return FullscreenImage(
+                                                tag: post.diDenImgUrl,
+                                                url: post.diDenImgUrl);
+                                          },
+                                        ),
+                                      );
                                     },
                                   ),
-                                );
-                              },
-                            ),
                           ),
                           SizedBox(
                             width: 10.0,
                           ),
                           Expanded(
-                            child: GestureDetector(
-                              child: Hero(
-                                tag: "abcd",
-                                child: Stack(
-                                  fit: StackFit.passthrough,
-                                  alignment: AlignmentDirectional.bottomStart,
-                                  children: [
-                                    CachedNetworkImage(
-                                      imageUrl: post.inImg,
-                                      height: isDesktop ? 400.0 : 200.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    ClipRect(
-                                      child: BackdropFilter(
-                                        filter: new ImageFilter.blur(
-                                            sigmaX: 10.0, sigmaY: 10.0),
-                                        child: Container(
-                                          color: Palette.koniuBlue
-                                              .withOpacity(0.5),
-                                          height: isDesktop ? 50.0 : 30.0,
-                                          child: Center(
-                                            child: Text(
-                                              "Về: 16:30",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16.0),
+                            child: post.thoiGianVe == ""
+                                ? Stack(
+                                    fit: StackFit.passthrough,
+                                    alignment: AlignmentDirectional.bottomStart,
+                                    children: [
+                                      Container(
+                                        color: Colors.black26,
+                                        height: isDesktop ? 400.0 : 200.0,
+                                        child: Icon(
+                                          MdiIcons.clockOutline,
+                                          size: 50.0,
+                                          color: Colors.black38,
+                                        ),
+                                      ),
+                                      ClipRect(
+                                        child: BackdropFilter(
+                                          filter: new ImageFilter.blur(
+                                              sigmaX: 10.0, sigmaY: 10.0),
+                                          child: Container(
+                                            color: Palette.koniuBlue
+                                                .withOpacity(0.5),
+                                            height: isDesktop ? 50.0 : 30.0,
+                                            child: Center(
+                                              child: Text(
+                                                "Về: --:--:--",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.0),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
+                                    ],
+                                  )
+                                : GestureDetector(
+                                    child: Hero(
+                                      tag: post.diVeImgUrl,
+                                      child: Stack(
+                                        fit: StackFit.passthrough,
+                                        alignment:
+                                            AlignmentDirectional.bottomStart,
+                                        children: [
+                                          CachedNetworkImage(
+                                            imageUrl: post.diVeImgUrl,
+                                            height: isDesktop ? 400.0 : 200.0,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                          ),
+                                          ClipRect(
+                                            child: BackdropFilter(
+                                              filter: new ImageFilter.blur(
+                                                  sigmaX: 10.0, sigmaY: 10.0),
+                                              child: Container(
+                                                color: Palette.koniuBlue
+                                                    .withOpacity(0.5),
+                                                height: isDesktop ? 50.0 : 30.0,
+                                                child: Center(
+                                                  child: Text(
+                                                    "Về: ${post.thoiGianVe}",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16.0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) {
-                                      return FullscreenImage(
-                                          tag: "abc", url: post.inImg);
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) {
+                                            return FullscreenImage(
+                                                tag: post.diVeImgUrl,
+                                                url: post.diVeImgUrl);
+                                          },
+                                        ),
+                                      );
                                     },
                                   ),
-                                );
-                              },
-                            ),
                           ),
                         ],
                       ),
@@ -174,7 +253,7 @@ class PostContainer extends StatelessWidget {
 }
 
 class _PostHeader extends StatelessWidget {
-  final Post post;
+  final Post2 post;
 
   const _PostHeader({
     Key key,
@@ -199,14 +278,16 @@ class _PostHeader extends StatelessWidget {
 
     return Row(
       children: [
-        ProfileAvatar(imageUrl: post.kid.imageUrl),
+        ProfileAvatar(
+          imageUrl: post.kidObj.avtUrl,
+        ),
         const SizedBox(width: 8.0),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                post.kid.name,
+                post.kidObj.hoTen,
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
@@ -214,7 +295,7 @@ class _PostHeader extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    post.date,
+                    Jiffy(post.ngay).format("dd/MM/yyyy"),
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 12.0,
@@ -225,12 +306,12 @@ class _PostHeader extends StatelessWidget {
             ],
           ),
         ),
-        GestureDetector(
-          child: const Icon(Icons.more_horiz),
-          onTapDown: (TapDownDetails details) {
-            _showPopupMenu(details.globalPosition);
-          },
-        ),
+        // GestureDetector(
+        //   child: const Icon(Icons.more_horiz),
+        //   onTapDown: (TapDownDetails details) {
+        //     _showPopupMenu(details.globalPosition);
+        //   },
+        // ),
       ],
     );
   }

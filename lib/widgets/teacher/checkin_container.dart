@@ -9,16 +9,19 @@ import 'package:flutter_facebook_responsive_ui/api_connection/api_connection.dar
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/models/api_model.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
-import 'package:flutter_facebook_responsive_ui/parents_screens/screens.dart';
+import 'package:flutter_facebook_responsive_ui/screens/account_screen.dart';
+import 'package:flutter_facebook_responsive_ui/screens/fullscreen_image.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CheckinContainer extends StatefulWidget {
-  final Post post;
+  final RefreshCheckinCallback onCreate;
+  final Post2 post;
 
-  const CheckinContainer({Key key, this.post}) : super(key: key);
+  const CheckinContainer({Key key, this.post, this.onCreate}) : super(key: key);
 
   @override
   _CheckinContainerState createState() => _CheckinContainerState();
@@ -28,9 +31,10 @@ class _CheckinContainerState extends State<CheckinContainer> {
   File _image;
   final picker = ImagePicker();
 
-  Future takeImage() async {
-    final pickedFile =
-        await picker.getImage(source: ImageSource.camera, maxWidth: 1080.0);
+  Future takeImage(bool isDesktop, bool isDen) async {
+    final pickedFile = isDesktop
+        ? await picker.getImage(source: ImageSource.gallery, maxWidth: 1080.0)
+        : await picker.getImage(source: ImageSource.camera, maxWidth: 1080.0);
 
     // // getting a directory path for saving
     final Directory extDir = await getApplicationDocumentsDirectory();
@@ -47,22 +51,23 @@ class _CheckinContainerState extends State<CheckinContainer> {
         _image = File(pickedFile.path);
       } else {
         print('No image selected.');
+        return;
       }
     });
 
-    // ImageName uimage = await uploadImage(_image);
-    // print(uimage.imageName);
+    UploadedImage uimage;
+    uploadImage(_image).then((value) {
+      uimage = value;
+      updatePost(widget.post).then((value) {
+        print(value);
+        // setState(() {});
+        widget.onCreate();
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final _chars = 'abcdefghijklmnopqrstuvwxyz';
-    Random _rnd = Random();
-
-    String getRandomString(int length) =>
-        String.fromCharCodes(Iterable.generate(
-            length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-
     final bool isDesktop = Responsive.isDesktop(context);
     return Card(
       margin: EdgeInsets.symmetric(
@@ -90,7 +95,9 @@ class _CheckinContainerState extends State<CheckinContainer> {
                       height: isDesktop ? 50.0 : 30.0,
                       child: Center(
                         child: Text(
-                          "Đến: --:--",
+                          widget.post.thoiGianDen == ""
+                              ? "Đến: --:--"
+                              : "Đến: ${widget.post.thoiGianDen}",
                           style: TextStyle(color: Colors.white, fontSize: 16.0),
                         ),
                       ),
@@ -103,7 +110,9 @@ class _CheckinContainerState extends State<CheckinContainer> {
                       height: isDesktop ? 50.0 : 30.0,
                       child: Center(
                         child: Text(
-                          "Về: --:--",
+                          widget.post.thoiGianVe == ""
+                              ? "Về: --:--"
+                              : "Về: ${widget.post.thoiGianVe}",
                           style: TextStyle(color: Colors.white, fontSize: 16.0),
                         ),
                       ),
@@ -112,29 +121,145 @@ class _CheckinContainerState extends State<CheckinContainer> {
                 ],
               ),
             ),
-            expanded: widget.post.inImg != null
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-                    child: Container(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
+            expanded: Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Container(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        child: Hero(
+                          tag: widget.post.diDenImgUrl,
+                          child: Stack(
+                            fit: StackFit.passthrough,
+                            alignment: AlignmentDirectional.bottomStart,
+                            children: [
+                              widget.post.diDenImgUrl == ""
+                                  ? Container(
+                                      color: Colors.black26,
+                                      height: isDesktop ? 400.0 : 200.0,
+                                      child: Icon(
+                                        Icons.add_a_photo_outlined,
+                                        size: 50.0,
+                                        color: Palette.koniuBlue,
+                                      ),
+                                    )
+                                  : CachedNetworkImage(
+                                      imageUrl: widget.post.diDenImgUrl,
+                                      height: isDesktop ? 400.0 : 200.0,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    ),
+                              ClipRect(
+                                child: BackdropFilter(
+                                  filter: new ImageFilter.blur(
+                                      sigmaX: 10.0, sigmaY: 10.0),
+                                  child: Container(
+                                    color: Palette.koniuBlue.withOpacity(0.5),
+                                    height: isDesktop ? 50.0 : 30.0,
+                                    child: Center(
+                                      child: Text(
+                                        widget.post.thoiGianDen == ""
+                                            ? "Đến: --:--"
+                                            : "Đến: ${widget.post.thoiGianDen}",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        onTap: widget.post.diDenImgUrl != ""
+                            ? () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) {
+                                      return FullscreenImage(
+                                          tag: widget.post.diDenImgUrl,
+                                          url: widget.post.diDenImgUrl);
+                                    },
+                                  ),
+                                );
+                              }
+                            : () {
+                                print("camera");
+                                takeImage(isDesktop, true);
+                              },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Expanded(
+                      child: widget.post.diDenImgUrl == ""
+                          ? Stack(
+                              fit: StackFit.passthrough,
+                              alignment: AlignmentDirectional.bottomStart,
+                              children: [
+                                Container(
+                                  color: Colors.black26,
+                                  height: isDesktop ? 400.0 : 200.0,
+                                  child: Icon(
+                                    MdiIcons.clockOutline,
+                                    size: 50.0,
+                                    color: Colors.black38,
+                                  ),
+                                ),
+                                ClipRect(
+                                  child: BackdropFilter(
+                                    filter: new ImageFilter.blur(
+                                        sigmaX: 10.0, sigmaY: 10.0),
+                                    child: Container(
+                                      color: Palette.koniuBlue.withOpacity(0.5),
+                                      height: isDesktop ? 50.0 : 30.0,
+                                      child: Center(
+                                        child: Text(
+                                          "Về: --:--",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : GestureDetector(
                               child: Hero(
-                                tag: "abcd",
+                                tag: widget.post.diVeImgUrl,
                                 child: Stack(
                                   fit: StackFit.passthrough,
                                   alignment: AlignmentDirectional.bottomStart,
                                   children: [
-                                    Container(
-                                      color: Colors.black26,
-                                      height: 200.0,
-                                      child: Icon(
-                                        Icons.add_a_photo_outlined,
-                                        size: 50.0,
-                                        color: Colors.black38,
-                                      ),
-                                    ),
+                                    widget.post.diVeImgUrl == ""
+                                        ? Container(
+                                            color: Colors.black26,
+                                            height: isDesktop ? 400.0 : 200.0,
+                                            child: Icon(
+                                              Icons.add_a_photo_outlined,
+                                              size: 50.0,
+                                              color: Palette.koniuBlue,
+                                            ),
+                                          )
+                                        : CachedNetworkImage(
+                                            imageUrl: widget.post.diVeImgUrl,
+                                            height: isDesktop ? 400.0 : 200.0,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                          ),
                                     ClipRect(
                                       child: BackdropFilter(
                                         filter: new ImageFilter.blur(
@@ -145,7 +270,9 @@ class _CheckinContainerState extends State<CheckinContainer> {
                                           height: isDesktop ? 50.0 : 30.0,
                                           child: Center(
                                             child: Text(
-                                              "Đến: --:--",
+                                              widget.post.thoiGianVe == ""
+                                                  ? "Về: --:--"
+                                                  : "Về: ${widget.post.thoiGianVe}",
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 16.0),
@@ -157,241 +284,38 @@ class _CheckinContainerState extends State<CheckinContainer> {
                                   ],
                                 ),
                               ),
-                              onTap: _image != null
+                              onTap: widget.post.diVeImgUrl != ""
                                   ? () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (_) {
                                             return FullscreenImage(
-                                                tag: "abc",
-                                                url: widget.post.inImg);
+                                                tag: widget.post.diVeImgUrl,
+                                                url: widget.post.diVeImgUrl);
                                           },
                                         ),
                                       );
                                     }
                                   : () {
                                       print("camera");
-                                      takeImage();
+                                      takeImage(isDesktop, false);
                                     },
                             ),
-                          ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              child: Hero(
-                                tag: "abcd",
-                                child: Stack(
-                                  fit: StackFit.passthrough,
-                                  alignment: AlignmentDirectional.bottomStart,
-                                  children: [
-                                    Container(
-                                      color: Colors.black26,
-                                      height: 200.0,
-                                      child: Icon(
-                                        Icons.add_a_photo_outlined,
-                                        size: 50.0,
-                                        color: Colors.black38,
-                                      ),
-                                    ),
-                                    ClipRect(
-                                      child: BackdropFilter(
-                                        filter: new ImageFilter.blur(
-                                            sigmaX: 10.0, sigmaY: 10.0),
-                                        child: Container(
-                                          color: Palette.koniuBlue
-                                              .withOpacity(0.5),
-                                          height: isDesktop ? 50.0 : 30.0,
-                                          child: Center(
-                                            child: Text(
-                                              "Về: --:--",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (_) {
-                                //       return FullscreenImage(
-                                //           tag: "abc", url: widget.post.inImg);
-                                //     },
-                                //   ),
-                                // );
-                                print("camera");
-                                takeImage();
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
-                  )
-                : const SizedBox.shrink(),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
-        // child: Column(
-        //   children: [
-        //     Padding(
-        //       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.stretch,
-        //         children: [
-        //           _PostHeader(post: widget.post),
-        //           const SizedBox(height: 4.0),
-        //           // Text(widget.post.caption),
-        //           const SizedBox(height: 8.0),
-        //           widget.post.inImg != null
-        //               ? const SizedBox.shrink()
-        //               : const SizedBox(height: 6.0),
-        //         ],
-        //       ),
-        //     ),
-        //     widget.post.inImg != null
-        //         ? Padding(
-        //             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        //             child: Container(
-        //               child: Row(
-        //                 children: [
-        //                   Expanded(
-        //                     child: GestureDetector(
-        //                       child: Hero(
-        //                         tag: "abcd",
-        //                         child: Stack(
-        //                           fit: StackFit.passthrough,
-        //                           alignment: AlignmentDirectional.bottomStart,
-        //                           children: [
-        //                             Container(
-        //                               color: Colors.black26,
-        //                               height: 200.0,
-        //                               child: Icon(
-        //                                 Icons.add_a_photo_outlined,
-        //                                 size: 50.0,
-        //                                 color: Colors.black38,
-        //                               ),
-        //                             ),
-        //                             ClipRect(
-        //                               child: BackdropFilter(
-        //                                 filter: new ImageFilter.blur(
-        //                                     sigmaX: 10.0, sigmaY: 10.0),
-        //                                 child: Container(
-        //                                   color: Palette.koniuBlue
-        //                                       .withOpacity(0.5),
-        //                                   height: isDesktop ? 50.0 : 30.0,
-        //                                   child: Center(
-        //                                     child: Text(
-        //                                       "Đến",
-        //                                       style: TextStyle(
-        //                                           color: Colors.white,
-        //                                           fontSize: 16.0),
-        //                                     ),
-        //                                   ),
-        //                                 ),
-        //                               ),
-        //                             ),
-        //                           ],
-        //                         ),
-        //                       ),
-        //                       onTap: _image != null
-        //                           ? () {
-        //                               Navigator.push(
-        //                                 context,
-        //                                 MaterialPageRoute(
-        //                                   builder: (_) {
-        //                                     return FullscreenImage(
-        //                                         tag: "abc",
-        //                                         url: widget.post.inImg);
-        //                                   },
-        //                                 ),
-        //                               );
-        //                             }
-        //                           : () {
-        //                               print("camera");
-        //                               takeImage();
-        //                             },
-        //                     ),
-        //                   ),
-        //                   SizedBox(
-        //                     width: 10.0,
-        //                   ),
-        //                   Expanded(
-        //                     child: GestureDetector(
-        //                       child: Hero(
-        //                         tag: "abcd",
-        //                         child: Stack(
-        //                           fit: StackFit.passthrough,
-        //                           alignment: AlignmentDirectional.bottomStart,
-        //                           children: [
-        //                             Container(
-        //                               color: Colors.black26,
-        //                               height: 200.0,
-        //                               child: Icon(
-        //                                 Icons.add_a_photo_outlined,
-        //                                 size: 50.0,
-        //                                 color: Colors.black38,
-        //                               ),
-        //                             ),
-        //                             ClipRect(
-        //                               child: BackdropFilter(
-        //                                 filter: new ImageFilter.blur(
-        //                                     sigmaX: 10.0, sigmaY: 10.0),
-        //                                 child: Container(
-        //                                   color: Palette.koniuBlue
-        //                                       .withOpacity(0.5),
-        //                                   height: isDesktop ? 50.0 : 30.0,
-        //                                   child: Center(
-        //                                     child: Text(
-        //                                       "Về",
-        //                                       style: TextStyle(
-        //                                           color: Colors.white,
-        //                                           fontSize: 16.0),
-        //                                     ),
-        //                                   ),
-        //                                 ),
-        //                               ),
-        //                             ),
-        //                           ],
-        //                         ),
-        //                       ),
-        //                       onTap: () {
-        //                         // Navigator.push(
-        //                         //   context,
-        //                         //   MaterialPageRoute(
-        //                         //     builder: (_) {
-        //                         //       return FullscreenImage(
-        //                         //           tag: "abc", url: widget.post.inImg);
-        //                         //     },
-        //                         //   ),
-        //                         // );
-        //                         print("camera");
-        //                         takeImage();
-        //                       },
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //           )
-        //         : const SizedBox.shrink(),
-        //   ],
-        // ),
       ),
     );
   }
 }
 
 class _PostHeader extends StatelessWidget {
-  final Post post;
+  final Post2 post;
 
   const _PostHeader({
     Key key,
@@ -414,41 +338,46 @@ class _PostHeader extends StatelessWidget {
       );
     }
 
-    return Row(
-      children: [
-        ProfileAvatar(imageUrl: post.kid.imageUrl),
-        const SizedBox(width: 8.0),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                post.kid.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    post.date,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 12.0,
-                    ),
+    return GestureDetector(
+      onTap: () => print("User"),
+      child: Row(
+        children: [
+          ProfileAvatar(imageUrl: post.kidObj.avtUrl),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  post.kidObj.hoTen,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
                   ),
-                ],
-              ),
-            ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      Jiffy(post.ngay).format("dd/MM/yyyy"),
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        // GestureDetector(
-        //   child: const Icon(Icons.more_horiz),
-        //   onTapDown: (TapDownDetails details) {
-        //     _showPopupMenu(details.globalPosition);
-        //   },
-        // ),
-      ],
+          // GestureDetector(
+          //   child: const Icon(Icons.more_horiz),
+          //   onTapDown: (TapDownDetails details) {
+          //     _showPopupMenu(details.globalPosition);
+          //   },
+          // ),
+        ],
+      ),
     );
   }
 }
+
+typedef RefreshCheckinCallback = void Function();

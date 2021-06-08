@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:photo_view/photo_view.dart';
 
 // class FullscreenImage extends StatelessWidget {
 //   @override
@@ -47,21 +48,37 @@ class _FullscreenImageState extends State<FullscreenImage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Hero(
-          tag: widget.tag,
-          child: Center(
-            child: CachedNetworkImage(
-              imageUrl: widget.url,
-            ),
-            // child: Text(widget.tag),
+    // const String herotag = widget.tag;
+    return Scaffold(
+      // appBar: AppBar(
+      //   title: Text("image"),
+      // ),
+      // backgroundColor: Colors.white,
+      body: Hero(
+        tag: widget.tag,
+        // child: Center(
+        //   child: CachedNetworkImage(
+        //     imageUrl: widget.url,
+        //   ),
+        //   // child: Text(widget.tag),
+        // ),
+        child: PhotoView(
+          imageProvider: CachedNetworkImageProvider(
+            widget.url,
           ),
         ),
-        // body: Center(child: Text(widget.tag)),
       ),
-      onTap: () => Navigator.pop(context),
+      // body: PhotoView(
+      //   imageProvider: CachedNetworkImageProvider(
+      //     widget.url,
+      //   ),
+      //   heroAttributes: const PhotoViewHeroAttributes(
+      //     tag: "abc",
+      //     transitionOnUserGestures: true,
+      //   ),
+      // ),
     );
+    //   onTap: () => Navigator.pop(context),
+    // );
   }
 }

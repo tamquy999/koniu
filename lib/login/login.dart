@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_responsive_ui/parents_screens/nav_screen.dart';
+import 'package:flutter_facebook_responsive_ui/screens/parents_screens/screens.dart';
 import 'package:flutter_login/flutter_login.dart';
 
 const users = const {

@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_responsive_ui/parents_screens/screens.dart';
+import 'package:flutter_facebook_responsive_ui/models/models.dart';
+import 'package:flutter_facebook_responsive_ui/screens/account_screen.dart';
 
 class CustomSilverAppbar extends StatelessWidget {
+  final User user;
+
+  const CustomSilverAppbar({Key key, this.user}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(

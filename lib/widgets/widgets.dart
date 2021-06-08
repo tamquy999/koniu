@@ -15,5 +15,6 @@ export 'date_picker.dart';
 // teacher
 export 'teacher/checkin_container.dart';
 export 'teacher/activity_container.dart';
+export 'teacher/create_activity_container.dart';
 export 'teacher/meal_container.dart';
 export 'teacher/health_container.dart';

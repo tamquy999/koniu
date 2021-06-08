@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
-import 'package:flutter_facebook_responsive_ui/parents_screens/screens.dart';
+import 'package:flutter_facebook_responsive_ui/screens/fullscreen_image.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -40,23 +40,23 @@ class ActivityContainer extends StatelessWidget {
                 children: [
                   _ActivityHeader(activity: activity),
                   const SizedBox(height: 4.0),
-                  Text(activity.caption),
+                  Text(activity.thongTin),
                   const SizedBox(height: 8.0),
-                  activity.imageUrl != null
+                  activity.imgUrl != null
                       ? const SizedBox.shrink()
                       : const SizedBox(height: 6.0),
                 ],
               ),
             ),
-            activity.imageUrl != null
+            activity.imgUrl != null && activity.imgUrl != ""
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Container(
                       child: GestureDetector(
                         child: Hero(
-                          tag: "abcd",
+                          tag: activity.imgUrl,
                           child: CachedNetworkImage(
-                            imageUrl: activity.imageUrl,
+                            imageUrl: activity.imgUrl,
                             // height: 200.0,
                             fit: BoxFit.cover,
                           ),
@@ -67,7 +67,7 @@ class ActivityContainer extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (_) {
                                 return FullscreenImage(
-                                    tag: "abc", url: activity.imageUrl);
+                                    tag: activity.imgUrl, url: activity.imgUrl);
                               },
                             ),
                           );
@@ -95,14 +95,14 @@ class _ActivityHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ProfileAvatar(imageUrl: activity.teacher.imageUrl),
+        ProfileAvatar(imageUrl: activity.nguoiTao.avtUrl),
         const SizedBox(width: 8.0),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                activity.teacher.name,
+                activity.nguoiTao.hoTen,
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                 ),
@@ -110,7 +110,7 @@ class _ActivityHeader extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    activity.time,
+                    activity.gio,
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 12.0,
