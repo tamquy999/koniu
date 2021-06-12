@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
 import 'package:flutter_facebook_responsive_ui/screens/fullscreen_image.dart';
+import 'package:flutter_facebook_responsive_ui/screens/teacher_screen.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -93,39 +95,51 @@ class _ActivityHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ProfileAvatar(imageUrl: activity.nguoiTao.avtUrl),
-        const SizedBox(width: 8.0),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                activity.nguoiTao.hoTen,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    activity.gio,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 12.0,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => TeacherScreen(
+              idGV: activity.idGiaoVien.toString(),
+            ),
           ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.more_horiz),
-          onPressed: () => print('More'),
-        ),
-      ],
+        );
+      },
+      child: Row(
+        children: [
+          ProfileAvatar(imageUrl: activity.nguoiTao.avtUrl),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  activity.nguoiTao.hoTen,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      activity.gio,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.more_horiz),
+            onPressed: () => print('More'),
+          ),
+        ],
+      ),
     );
   }
 }

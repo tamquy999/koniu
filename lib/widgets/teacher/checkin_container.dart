@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/api_connection/api_connection.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
@@ -11,6 +12,8 @@ import 'package:flutter_facebook_responsive_ui/models/api_model.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
 import 'package:flutter_facebook_responsive_ui/screens/account_screen.dart';
 import 'package:flutter_facebook_responsive_ui/screens/fullscreen_image.dart';
+import 'package:flutter_facebook_responsive_ui/screens/kid_screen.dart';
+import 'package:flutter_facebook_responsive_ui/screens/parent_screen.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jiffy/jiffy.dart';
@@ -324,22 +327,31 @@ class _PostHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _showPopupMenu(Offset offset) async {
-      double left = offset.dx;
-      double top = offset.dy;
-      await showMenu(
-        context: context,
-        position: RelativeRect.fromLTRB(left, top, 0, 0),
-        items: [
-          PopupMenuItem<String>(child: AccountScreen(), value: 'Doge'),
-          PopupMenuItem<String>(child: const Text('Lion'), value: 'Lion'),
-        ],
-        elevation: 8.0,
-      );
-    }
+    // void _showPopupMenu(Offset offset) async {
+    //   double left = offset.dx;
+    //   double top = offset.dy;
+    //   await showMenu(
+    //     context: context,
+    //     position: RelativeRect.fromLTRB(left, top, 0, 0),
+    //     items: [
+    //       PopupMenuItem<String>(child: AccountScreen(), value: 'Doge'),
+    //       PopupMenuItem<String>(child: const Text('Lion'), value: 'Lion'),
+    //     ],
+    //     elevation: 8.0,
+    //   );
+    // }
 
     return GestureDetector(
-      onTap: () => print("User"),
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => KidScreen(
+              idHS: post.idHocSinh.toString(),
+            ),
+          ),
+        );
+      },
       child: Row(
         children: [
           ProfileAvatar(imageUrl: post.kidObj.avtUrl),

@@ -1,8 +1,10 @@
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/api_connection/api_connection.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
+import 'package:flutter_facebook_responsive_ui/screens/kid_screen.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -520,35 +522,47 @@ class _HealthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ProfileAvatar(imageUrl: health.kidObj.avtUrl),
-        const SizedBox(width: 8.0),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                health.kidObj.hoTen,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    Jiffy(health.ngay).format("dd/MM/yyyy"),
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 12.0,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => KidScreen(
+              idHS: health.idHs.toString(),
+            ),
           ),
-        ),
-      ],
+        );
+      },
+      child: Row(
+        children: [
+          ProfileAvatar(imageUrl: health.kidObj.avtUrl),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  health.kidObj.hoTen,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      Jiffy(health.ngay).format("dd/MM/yyyy"),
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

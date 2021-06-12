@@ -2,11 +2,13 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
 import 'package:flutter_facebook_responsive_ui/screens/account_screen.dart';
 import 'package:flutter_facebook_responsive_ui/screens/fullscreen_image.dart';
+import 'package:flutter_facebook_responsive_ui/screens/kid_screen.dart';
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -262,57 +264,69 @@ class _PostHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _showPopupMenu(Offset offset) async {
-      double left = offset.dx;
-      double top = offset.dy;
-      await showMenu(
-        context: context,
-        position: RelativeRect.fromLTRB(left, top, 0, 0),
-        items: [
-          PopupMenuItem<String>(child: AccountScreen(), value: 'Doge'),
-          PopupMenuItem<String>(child: const Text('Lion'), value: 'Lion'),
-        ],
-        elevation: 8.0,
-      );
-    }
+    // void _showPopupMenu(Offset offset) async {
+    //   double left = offset.dx;
+    //   double top = offset.dy;
+    //   await showMenu(
+    //     context: context,
+    //     position: RelativeRect.fromLTRB(left, top, 0, 0),
+    //     items: [
+    //       PopupMenuItem<String>(child: AccountScreen(), value: 'Doge'),
+    //       PopupMenuItem<String>(child: const Text('Lion'), value: 'Lion'),
+    //     ],
+    //     elevation: 8.0,
+    //   );
+    // }
 
-    return Row(
-      children: [
-        ProfileAvatar(
-          imageUrl: post.kidObj.avtUrl,
-        ),
-        const SizedBox(width: 8.0),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                post.kidObj.hoTen,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    Jiffy(post.ngay).format("dd/MM/yyyy"),
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 12.0,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => KidScreen(
+              idHS: post.idHocSinh.toString(),
+            ),
           ),
-        ),
-        // GestureDetector(
-        //   child: const Icon(Icons.more_horiz),
-        //   onTapDown: (TapDownDetails details) {
-        //     _showPopupMenu(details.globalPosition);
-        //   },
-        // ),
-      ],
+        );
+      },
+      child: Row(
+        children: [
+          ProfileAvatar(
+            imageUrl: post.kidObj.avtUrl,
+          ),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  post.kidObj.hoTen,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      Jiffy(post.ngay).format("dd/MM/yyyy"),
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // GestureDetector(
+          //   child: const Icon(Icons.more_horiz),
+          //   onTapDown: (TapDownDetails details) {
+          //     _showPopupMenu(details.globalPosition);
+          //   },
+          // ),
+        ],
+      ),
     );
   }
 }

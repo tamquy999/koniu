@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/api_connection/api_connection.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
@@ -7,6 +8,8 @@ import 'package:flutter_facebook_responsive_ui/widgets/custom_silver_appbar.dart
 import 'package:flutter_facebook_responsive_ui/widgets/widgets.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../kid_screen.dart';
 
 class HealthScreen extends StatefulWidget {
   @override
@@ -270,14 +273,14 @@ class _HealthContainerState extends State<HealthContainer> {
   void initState() {
     // TODO: implement initState
     DateTime lastmonth = Jiffy(widget.health.ngay).subtract(months: 1).dateTime;
-    // print(lastmonth);
-    getOneHealth(widget.health.idHs, lastmonth.toString().substring(0, 10))
-        .then((val) {
+    print("lastmonth" + lastmonth.toString());
+    print("widget.health.idHs" + widget.health.idHs.toString());
+    getOneHealth(1, lastmonth.toString().substring(0, 10)).then((val) {
       lasthealth = val;
-      print(lasthealth.ngay);
+      print("ngay trc" + lasthealth.ngay.toString());
       setState(() {});
     }).catchError((error, stackTrace) {
-      print("outer: $error");
+      print("outer last month: $error");
       lasthealth = null;
       setState(() {});
     });
@@ -295,281 +298,284 @@ class _HealthContainerState extends State<HealthContainer> {
       shape: isDesktop
           ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))
           : null,
-      child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: _HealthHeader(
-              health: widget.health,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 5.0),
+              child: _HealthHeader(
+                health: widget.health,
+              ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 5.0),
-            height: 120.0,
-            decoration: BoxDecoration(
-              color: Palette.koniuBlue,
-              borderRadius: BorderRadius.circular(10.0),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 5.0),
+              height: 120.0,
+              decoration: BoxDecoration(
+                color: Palette.koniuBlue,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Icon(
+                                MdiIcons.babyFaceOutline,
+                                color: Colors.white,
+                                size: 30.0,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.bottomLeft,
+                              // color: Colors.red.shade200,
+                              child: Text(
+                                "Chỉ số BMI (kg/m\u00B2)",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.bottomLeft,
+                              // color: Colors.red.shade100,
+                              child: Text(
+                                widget.health.danhGia != "" &&
+                                        widget.health.danhGia != ""
+                                    ? widget.health.danhGia
+                                    : "?",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                widget.health.bmi.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.white24,
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Text(
+                                lasthealth != null
+                                    ? "Tháng trước: ${lasthealth.bmi.toString()}"
+                                    : "Tháng trước: ?",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 5.0),
+              height: 150.0,
+              // color: Colors.amber,
               child: Row(
                 children: [
                   Expanded(
-                    flex: 3,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            child: Icon(
-                              MdiIcons.babyFaceOutline,
-                              color: Colors.white,
-                              size: 30.0,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.bottomLeft,
-                            // color: Colors.red.shade200,
-                            child: Text(
-                              "Chỉ số BMI (kg/m\u00B2)",
-                              style: TextStyle(
-                                color: Colors.white,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Cân nặng",
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Icon(MdiIcons.scaleBalance),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.bottomLeft,
-                            // color: Colors.red.shade100,
-                            child: Text(
-                              widget.health.danhGia != "" &&
-                                      widget.health.danhGia != ""
-                                  ? widget.health.danhGia
-                                  : "?",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  widget.health.canNang != null
+                                      ? widget.health.canNang.toString()
+                                      : "?",
+                                  style: TextStyle(
+                                    fontSize: 35.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Expanded(
+                              flex: 2,
+                              child: Row(
+                                children: [
+                                  Text("kg"),
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerRight,
+                                      child: lasthealth != null
+                                          ? widget.health.canNang <
+                                                  lasthealth.canNang
+                                              ? Text(
+                                                  "▼ ${(lasthealth.canNang - widget.health.canNang).toStringAsFixed(1)} kg",
+                                                  style: TextStyle(
+                                                      color: Colors.red))
+                                              : Text(
+                                                  "▲ ${(widget.health.canNang - lasthealth.canNang).toStringAsFixed(1)} kg",
+                                                  style: TextStyle(
+                                                      color: Colors.green),
+                                                )
+                                          : Text("?"),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
                   Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              widget.health.bmi.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.w500,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Chiều cao",
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Icon(MdiIcons.ruler),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.white24,
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Text(
-                              lasthealth != null
-                                  ? "Tháng trước: ${lasthealth.bmi.toString()}"
-                                  : "Tháng trước: ?",
-                              style: TextStyle(
-                                color: Colors.white,
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  widget.health.chieuCao != null
+                                      ? widget.health.chieuCao.toString()
+                                      : "?",
+                                  style: TextStyle(
+                                    fontSize: 35.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Expanded(
+                              flex: 2,
+                              child: Row(
+                                children: [
+                                  Text("cm"),
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerRight,
+                                      child: lasthealth != null
+                                          ? widget.health.chieuCao <
+                                                  lasthealth.chieuCao
+                                              ? Text(
+                                                  "▼ ${(lasthealth.chieuCao - widget.health.chieuCao).toStringAsFixed(1)} cm",
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                )
+                                              : Text(
+                                                  "▲ ${(widget.health.chieuCao - lasthealth.chieuCao).toStringAsFixed(1)} cm",
+                                                  style: TextStyle(
+                                                      color: Colors.green),
+                                                )
+                                          : Text("?"),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 5.0),
-            height: 150.0,
-            // color: Colors.amber,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Cân nặng",
-                                  style: TextStyle(fontSize: 16.0),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                    child: Icon(MdiIcons.scaleBalance),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Container(
-                              alignment: Alignment.bottomLeft,
-                              child: Text(
-                                widget.health.canNang != null
-                                    ? widget.health.canNang.toString()
-                                    : "?",
-                                style: TextStyle(
-                                  fontSize: 35.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Row(
-                              children: [
-                                Text("kg"),
-                                Expanded(
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                    child: lasthealth != null
-                                        ? widget.health.canNang <
-                                                lasthealth.canNang
-                                            ? Text(
-                                                "▼ ${(lasthealth.canNang - widget.health.canNang).toStringAsFixed(1)} kg",
-                                                style: TextStyle(
-                                                    color: Colors.red))
-                                            : Text(
-                                                "▲ ${(widget.health.canNang - lasthealth.canNang).toStringAsFixed(1)} kg",
-                                                style: TextStyle(
-                                                    color: Colors.green),
-                                              )
-                                        : Text("?"),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Chiều cao",
-                                  style: TextStyle(fontSize: 16.0),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                    child: Icon(MdiIcons.ruler),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Container(
-                              alignment: Alignment.bottomLeft,
-                              child: Text(
-                                widget.health.chieuCao != null
-                                    ? widget.health.chieuCao.toString()
-                                    : "?",
-                                style: TextStyle(
-                                  fontSize: 35.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Row(
-                              children: [
-                                Text("cm"),
-                                Expanded(
-                                  child: Container(
-                                    alignment: Alignment.centerRight,
-                                    child: lasthealth != null
-                                        ? widget.health.chieuCao <
-                                                lasthealth.chieuCao
-                                            ? Text(
-                                                "▼ ${(lasthealth.chieuCao - widget.health.chieuCao).toStringAsFixed(1)} cm",
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              )
-                                            : Text(
-                                                "▲ ${(widget.health.chieuCao - lasthealth.chieuCao).toStringAsFixed(1)} cm",
-                                                style: TextStyle(
-                                                    color: Colors.green),
-                                              )
-                                        : Text("?"),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -585,37 +591,49 @@ class _HealthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ProfileAvatar(
-          imageUrl: health.kidObj.avtUrl,
-        ),
-        const SizedBox(width: 8.0),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                health.kidObj.hoTen,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    health.ngay.toString(),
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 12.0,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => KidScreen(
+              idHS: health.idHs.toString(),
+            ),
           ),
-        ),
-      ],
+        );
+      },
+      child: Row(
+        children: [
+          ProfileAvatar(
+            imageUrl: health.kidObj.avtUrl,
+          ),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  health.kidObj.hoTen,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      health.ngay.toString(),
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

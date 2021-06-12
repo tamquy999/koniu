@@ -7,7 +7,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_responsive_ui/dao/user_dao.dart';
 import 'package:flutter_facebook_responsive_ui/models/api_model.dart';
+import 'package:flutter_facebook_responsive_ui/models/kidInfo_model.dart';
 import 'package:flutter_facebook_responsive_ui/models/models.dart';
+import 'package:flutter_facebook_responsive_ui/models/parentInfo_model.dart';
+import 'package:flutter_facebook_responsive_ui/models/teacherInfo_model.dart';
 import 'package:http/http.dart' as http;
 // import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -432,6 +435,61 @@ Future<String> updateHealth(Health health) async {
 
   if (response.statusCode == 200) {
     return "update health success";
+  } else {
+    print(json.decode(response.body).toString());
+    throw Exception(json.decode(response.body));
+  }
+}
+
+// Info
+Future<KidInfo> getKid(String idHS) async {
+  String token = await getLocalToken();
+
+  final http.Response response = await http.get(
+      new Uri.http(_base, "/api/getHSPH", <String, String>{'idHS': idHS}),
+      headers: <String, String>{
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        'accept': 'application/json',
+        'access-token': token
+      });
+  if (response.statusCode == 200) {
+    return KidInfo.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  } else {
+    print(json.decode(response.body).toString());
+    throw Exception(json.decode(response.body));
+  }
+}
+
+Future<ParentInfo> getParent(String idPH) async {
+  String token = await getLocalToken();
+
+  final http.Response response = await http.get(
+      new Uri.http(_base, "/api/getPHHS", <String, String>{'idPH': idPH}),
+      headers: <String, String>{
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        'accept': 'application/json',
+        'access-token': token
+      });
+  if (response.statusCode == 200) {
+    return ParentInfo.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+  } else {
+    print(json.decode(response.body).toString());
+    throw Exception(json.decode(response.body));
+  }
+}
+
+Future<TeacherInfo> getGV(String idGV) async {
+  String token = await getLocalToken();
+
+  final http.Response response = await http.get(
+      new Uri.http(_base, "/api/getGV", <String, String>{'idGV': idGV}),
+      headers: <String, String>{
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        'accept': 'application/json',
+        'access-token': token
+      });
+  if (response.statusCode == 200) {
+    return TeacherInfo.fromJson(json.decode(utf8.decode(response.bodyBytes)));
   } else {
     print(json.decode(response.body).toString());
     throw Exception(json.decode(response.body));

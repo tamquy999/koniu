@@ -27,6 +27,10 @@ class DbUser {
       };
 }
 
+// To parse this JSON data, do
+//
+//     final user = userFromJson(jsonString);
+
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
@@ -39,6 +43,7 @@ class User {
     this.diachi,
     this.avturl,
     this.quyen,
+    this.id,
   });
 
   String username;
@@ -47,6 +52,7 @@ class User {
   String diachi;
   String avturl;
   int quyen;
+  int id;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         username: json["username"],
@@ -55,6 +61,7 @@ class User {
         diachi: json["diachi"],
         avturl: json["avturl"],
         quyen: json["quyen"],
+        id: json["id"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -64,5 +71,6 @@ class User {
         "diachi": diachi,
         "avturl": avturl,
         "quyen": quyen,
+        "id": id,
       };
 }
