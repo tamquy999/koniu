@@ -28,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_responsive_ui/login/login_page.dart';
+import 'package:flutter_facebook_responsive_ui/routes.dart';
 
 import 'bloc/authentication_bloc.dart';
 import 'config/palette.dart';
@@ -59,6 +60,7 @@ class SimpleBlocDelegate extends BlocDelegate {
 void main() {
   // BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository();
+  Flurorouter.setupRouter();
 
   runApp(BlocProvider<AuthenticationBloc>(
     create: (context) {
@@ -78,6 +80,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      onGenerateRoute: Flurorouter.router.generator,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,

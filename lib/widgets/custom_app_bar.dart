@@ -81,12 +81,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => AccountScreen(),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   CupertinoPageRoute(
+                      //     builder: (context) => AccountScreen(),
+                      //   ),
+                      // );
+                      Navigator.pushNamed(context, "/me");
                     },
                     child: Container(
                       color: Colors.white,

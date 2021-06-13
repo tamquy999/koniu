@@ -31,12 +31,13 @@ class CustomSilverAppbar extends StatelessWidget {
           iconSize: 30.0,
           color: Colors.black45,
           onPressed: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => AccountScreen(),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   CupertinoPageRoute(
+            //     builder: (context) => AccountScreen(),
+            //   ),
+            // );
+            Navigator.pushNamed(context, "/me");
           },
         ),
       ],

@@ -131,23 +131,23 @@ class _CheckinContainerState extends State<CheckinContainer> {
                   children: [
                     Expanded(
                       child: GestureDetector(
-                        child: Hero(
-                          tag: widget.post.diDenImgUrl,
-                          child: Stack(
-                            fit: StackFit.passthrough,
-                            alignment: AlignmentDirectional.bottomStart,
-                            children: [
-                              widget.post.diDenImgUrl == ""
-                                  ? Container(
-                                      color: Colors.black26,
-                                      height: isDesktop ? 400.0 : 200.0,
-                                      child: Icon(
-                                        Icons.add_a_photo_outlined,
-                                        size: 50.0,
-                                        color: Palette.koniuBlue,
-                                      ),
-                                    )
-                                  : CachedNetworkImage(
+                        child: Stack(
+                          fit: StackFit.passthrough,
+                          alignment: AlignmentDirectional.bottomStart,
+                          children: [
+                            widget.post.diDenImgUrl == ""
+                                ? Container(
+                                    color: Colors.black26,
+                                    height: isDesktop ? 400.0 : 200.0,
+                                    child: Icon(
+                                      Icons.add_a_photo_outlined,
+                                      size: 50.0,
+                                      color: Palette.koniuBlue,
+                                    ),
+                                  )
+                                : Hero(
+                                    tag: widget.post.diDenImgUrl,
+                                    child: CachedNetworkImage(
                                       imageUrl: widget.post.diDenImgUrl,
                                       height: isDesktop ? 400.0 : 200.0,
                                       fit: BoxFit.cover,
@@ -156,39 +156,50 @@ class _CheckinContainerState extends State<CheckinContainer> {
                                       errorWidget: (context, url, error) =>
                                           Icon(Icons.error),
                                     ),
-                              ClipRect(
-                                child: BackdropFilter(
-                                  filter: new ImageFilter.blur(
-                                      sigmaX: 10.0, sigmaY: 10.0),
-                                  child: Container(
-                                    color: Palette.koniuBlue.withOpacity(0.5),
-                                    height: isDesktop ? 50.0 : 30.0,
-                                    child: Center(
-                                      child: Text(
-                                        widget.post.thoiGianDen == ""
-                                            ? "Đến: --:--"
-                                            : "Đến: ${widget.post.thoiGianDen}",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16.0),
-                                      ),
+                                  ),
+                            ClipRect(
+                              child: BackdropFilter(
+                                filter: new ImageFilter.blur(
+                                    sigmaX: 10.0, sigmaY: 10.0),
+                                child: Container(
+                                  color: Palette.koniuBlue.withOpacity(0.5),
+                                  height: isDesktop ? 50.0 : 30.0,
+                                  child: Center(
+                                    child: Text(
+                                      widget.post.thoiGianDen == ""
+                                          ? "Đến: --:--"
+                                          : "Đến: ${widget.post.thoiGianDen}",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16.0),
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         onTap: widget.post.diDenImgUrl != ""
                             ? () {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (_) {
+                                //       return FullscreenImage(
+                                //           tag: widget.post.diDenImgUrl,
+                                //           url: widget.post.diDenImgUrl);
+                                //     },
+                                //   ),
+                                // );
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (_) {
-                                      return FullscreenImage(
-                                          tag: widget.post.diDenImgUrl,
-                                          url: widget.post.diDenImgUrl);
-                                    },
+                                  PageRouteBuilder(
+                                    pageBuilder: (c, a1, a2) => FullscreenImage(
+                                        tag: widget.post.diDenImgUrl,
+                                        url: widget.post.diDenImgUrl),
+                                    transitionsBuilder: (c, anim, a2, child) =>
+                                        FadeTransition(
+                                            opacity: anim, child: child),
+                                    // transitionDuration: Duration(milliseconds: 2000),
                                   ),
                                 );
                               }
@@ -237,23 +248,23 @@ class _CheckinContainerState extends State<CheckinContainer> {
                               ],
                             )
                           : GestureDetector(
-                              child: Hero(
-                                tag: widget.post.diVeImgUrl,
-                                child: Stack(
-                                  fit: StackFit.passthrough,
-                                  alignment: AlignmentDirectional.bottomStart,
-                                  children: [
-                                    widget.post.diVeImgUrl == ""
-                                        ? Container(
-                                            color: Colors.black26,
-                                            height: isDesktop ? 400.0 : 200.0,
-                                            child: Icon(
-                                              Icons.add_a_photo_outlined,
-                                              size: 50.0,
-                                              color: Palette.koniuBlue,
-                                            ),
-                                          )
-                                        : CachedNetworkImage(
+                              child: Stack(
+                                fit: StackFit.passthrough,
+                                alignment: AlignmentDirectional.bottomStart,
+                                children: [
+                                  widget.post.diVeImgUrl == ""
+                                      ? Container(
+                                          color: Colors.black26,
+                                          height: isDesktop ? 400.0 : 200.0,
+                                          child: Icon(
+                                            Icons.add_a_photo_outlined,
+                                            size: 50.0,
+                                            color: Palette.koniuBlue,
+                                          ),
+                                        )
+                                      : Hero(
+                                          tag: widget.post.diVeImgUrl,
+                                          child: CachedNetworkImage(
                                             imageUrl: widget.post.diVeImgUrl,
                                             height: isDesktop ? 400.0 : 200.0,
                                             fit: BoxFit.cover,
@@ -263,40 +274,55 @@ class _CheckinContainerState extends State<CheckinContainer> {
                                                 (context, url, error) =>
                                                     Icon(Icons.error),
                                           ),
-                                    ClipRect(
-                                      child: BackdropFilter(
-                                        filter: new ImageFilter.blur(
-                                            sigmaX: 10.0, sigmaY: 10.0),
-                                        child: Container(
-                                          color: Palette.koniuBlue
-                                              .withOpacity(0.5),
-                                          height: isDesktop ? 50.0 : 30.0,
-                                          child: Center(
-                                            child: Text(
-                                              widget.post.thoiGianVe == ""
-                                                  ? "Về: --:--"
-                                                  : "Về: ${widget.post.thoiGianVe}",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16.0),
-                                            ),
+                                        ),
+                                  ClipRect(
+                                    child: BackdropFilter(
+                                      filter: new ImageFilter.blur(
+                                          sigmaX: 10.0, sigmaY: 10.0),
+                                      child: Container(
+                                        color:
+                                            Palette.koniuBlue.withOpacity(0.5),
+                                        height: isDesktop ? 50.0 : 30.0,
+                                        child: Center(
+                                          child: Text(
+                                            widget.post.thoiGianVe == ""
+                                                ? "Về: --:--"
+                                                : "Về: ${widget.post.thoiGianVe}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16.0),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                               onTap: widget.post.diVeImgUrl != ""
                                   ? () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (_) {
+                                      //       return FullscreenImage(
+                                      //           tag: widget.post.diVeImgUrl,
+                                      //           url: widget.post.diVeImgUrl);
+                                      //     },
+                                      //   ),
+                                      // );
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (_) {
-                                            return FullscreenImage(
-                                                tag: widget.post.diVeImgUrl,
-                                                url: widget.post.diVeImgUrl);
-                                          },
+                                        PageRouteBuilder(
+                                          pageBuilder: (c, a1, a2) =>
+                                              FullscreenImage(
+                                                  tag: widget.post.diVeImgUrl,
+                                                  url: widget.post.diVeImgUrl),
+                                          transitionsBuilder:
+                                              (c, anim, a2, child) =>
+                                                  FadeTransition(
+                                                      opacity: anim,
+                                                      child: child),
+                                          // transitionDuration: Duration(milliseconds: 2000),
                                         ),
                                       );
                                     }
@@ -343,14 +369,15 @@ class _PostHeader extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => KidScreen(
-              idHS: post.idHocSinh.toString(),
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   CupertinoPageRoute(
+        //     builder: (context) => KidScreen(
+        //       idHS: post.idHocSinh.toString(),
+        //     ),
+        //   ),
+        // );
+        Navigator.pushNamed(context, '/kid/${post.idHocSinh.toString()}');
       },
       child: Row(
         children: [

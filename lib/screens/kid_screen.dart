@@ -194,16 +194,18 @@ class __MobileKidScreenState extends State<_MobileKidScreen> {
                                               children: [
                                                 GestureDetector(
                                                   onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      CupertinoPageRoute(
-                                                        builder: (context) =>
-                                                            ParentScreen(
-                                                          idPH: widget.kid.idPh
-                                                              .toString(),
-                                                        ),
-                                                      ),
-                                                    );
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   CupertinoPageRoute(
+                                                    //     builder: (context) =>
+                                                    //         ParentScreen(
+                                                    //       idPH: widget.kid.idPh
+                                                    //           .toString(),
+                                                    //     ),
+                                                    //   ),
+                                                    // );
+                                                    Navigator.pushNamed(context,
+                                                        '/parent/${widget.kid.idPh.toString()}');
                                                   },
                                                   child: ClipRRect(
                                                     borderRadius:
@@ -261,18 +263,21 @@ class __MobileKidScreenState extends State<_MobileKidScreen> {
                                                                 right: 10.0),
                                                         child: GestureDetector(
                                                           onTap: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              CupertinoPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        TeacherScreen(
-                                                                  idGV: listgv
-                                                                      .id
-                                                                      .toString(),
-                                                                ),
-                                                              ),
-                                                            );
+                                                            // Navigator.push(
+                                                            //   context,
+                                                            //   CupertinoPageRoute(
+                                                            //     builder:
+                                                            //         (context) =>
+                                                            //             TeacherScreen(
+                                                            //       idGV: listgv
+                                                            //           .id
+                                                            //           .toString(),
+                                                            //     ),
+                                                            //   ),
+                                                            // );
+                                                            Navigator.pushNamed(
+                                                                context,
+                                                                '/teacher/${listgv.id.toString()}');
                                                           },
                                                           child: ClipRRect(
                                                             borderRadius:
@@ -457,17 +462,20 @@ class __DesktopKidScreenState extends State<_DesktopKidScreen> {
                                                 children: [
                                                   GestureDetector(
                                                     onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        CupertinoPageRoute(
-                                                          builder: (context) =>
-                                                              ParentScreen(
-                                                            idPH: widget
-                                                                .kid.idPh
-                                                                .toString(),
-                                                          ),
-                                                        ),
-                                                      );
+                                                      // Navigator.push(
+                                                      //   context,
+                                                      //   CupertinoPageRoute(
+                                                      //     builder: (context) =>
+                                                      //         ParentScreen(
+                                                      //       idPH: widget
+                                                      //           .kid.idPh
+                                                      //           .toString(),
+                                                      //     ),
+                                                      //   ),
+                                                      // );
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          '/parent/${widget.kid.idPh.toString()}');
                                                     },
                                                     child: ClipRRect(
                                                       borderRadius:
@@ -526,18 +534,21 @@ class __DesktopKidScreenState extends State<_DesktopKidScreen> {
                                                           child:
                                                               GestureDetector(
                                                             onTap: () {
-                                                              Navigator.push(
-                                                                context,
-                                                                CupertinoPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          TeacherScreen(
-                                                                    idGV: listgv
-                                                                        .id
-                                                                        .toString(),
-                                                                  ),
-                                                                ),
-                                                              );
+                                                              // Navigator.push(
+                                                              //   context,
+                                                              //   CupertinoPageRoute(
+                                                              //     builder:
+                                                              //         (context) =>
+                                                              //             TeacherScreen(
+                                                              //       idGV: listgv
+                                                              //           .id
+                                                              //           .toString(),
+                                                              //     ),
+                                                              //   ),
+                                                              // );
+                                                              Navigator.pushNamed(
+                                                                  context,
+                                                                  '/teacher/${listgv.id.toString()}');
                                                             },
                                                             child: ClipRRect(
                                                               borderRadius:

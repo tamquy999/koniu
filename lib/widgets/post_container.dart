@@ -96,14 +96,14 @@ class PostContainer extends StatelessWidget {
                                     ],
                                   )
                                 : GestureDetector(
-                                    child: Hero(
-                                      tag: post.diDenImgUrl,
-                                      child: Stack(
-                                        fit: StackFit.passthrough,
-                                        alignment:
-                                            AlignmentDirectional.bottomStart,
-                                        children: [
-                                          CachedNetworkImage(
+                                    child: Stack(
+                                      fit: StackFit.passthrough,
+                                      alignment:
+                                          AlignmentDirectional.bottomStart,
+                                      children: [
+                                        Hero(
+                                          tag: post.diDenImgUrl,
+                                          child: CachedNetworkImage(
                                             imageUrl: post.diDenImgUrl,
                                             height: isDesktop ? 400.0 : 200.0,
                                             fit: BoxFit.cover,
@@ -113,37 +113,52 @@ class PostContainer extends StatelessWidget {
                                                 (context, url, error) =>
                                                     Icon(Icons.error),
                                           ),
-                                          ClipRect(
-                                            child: BackdropFilter(
-                                              filter: new ImageFilter.blur(
-                                                  sigmaX: 10.0, sigmaY: 10.0),
-                                              child: Container(
-                                                color: Palette.koniuBlue
-                                                    .withOpacity(0.5),
-                                                height: isDesktop ? 50.0 : 30.0,
-                                                child: Center(
-                                                  child: Text(
-                                                    "Đến: ${post.thoiGianDen}",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 16.0),
-                                                  ),
+                                        ),
+                                        ClipRect(
+                                          child: BackdropFilter(
+                                            filter: new ImageFilter.blur(
+                                                sigmaX: 10.0, sigmaY: 10.0),
+                                            child: Container(
+                                              color: Palette.koniuBlue
+                                                  .withOpacity(0.5),
+                                              height: isDesktop ? 50.0 : 30.0,
+                                              child: Center(
+                                                child: Text(
+                                                  "Đến: ${post.thoiGianDen}",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16.0),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                     onTap: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (_) {
+                                      //       return FullscreenImage(
+                                      //           tag: post.diDenImgUrl,
+                                      //           url: post.diDenImgUrl);
+                                      //     },
+                                      //   ),
+                                      // );
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (_) {
-                                            return FullscreenImage(
-                                                tag: post.diDenImgUrl,
-                                                url: post.diDenImgUrl);
-                                          },
+                                        PageRouteBuilder(
+                                          pageBuilder: (c, a1, a2) =>
+                                              FullscreenImage(
+                                                  tag: post.diDenImgUrl,
+                                                  url: post.diDenImgUrl),
+                                          transitionsBuilder:
+                                              (c, anim, a2, child) =>
+                                                  FadeTransition(
+                                                      opacity: anim,
+                                                      child: child),
+                                          // transitionDuration: Duration(milliseconds: 2000),
                                         ),
                                       );
                                     },
@@ -189,14 +204,14 @@ class PostContainer extends StatelessWidget {
                                     ],
                                   )
                                 : GestureDetector(
-                                    child: Hero(
-                                      tag: post.diVeImgUrl,
-                                      child: Stack(
-                                        fit: StackFit.passthrough,
-                                        alignment:
-                                            AlignmentDirectional.bottomStart,
-                                        children: [
-                                          CachedNetworkImage(
+                                    child: Stack(
+                                      fit: StackFit.passthrough,
+                                      alignment:
+                                          AlignmentDirectional.bottomStart,
+                                      children: [
+                                        Hero(
+                                          tag: post.diVeImgUrl,
+                                          child: CachedNetworkImage(
                                             imageUrl: post.diVeImgUrl,
                                             height: isDesktop ? 400.0 : 200.0,
                                             fit: BoxFit.cover,
@@ -206,37 +221,52 @@ class PostContainer extends StatelessWidget {
                                                 (context, url, error) =>
                                                     Icon(Icons.error),
                                           ),
-                                          ClipRect(
-                                            child: BackdropFilter(
-                                              filter: new ImageFilter.blur(
-                                                  sigmaX: 10.0, sigmaY: 10.0),
-                                              child: Container(
-                                                color: Palette.koniuBlue
-                                                    .withOpacity(0.5),
-                                                height: isDesktop ? 50.0 : 30.0,
-                                                child: Center(
-                                                  child: Text(
-                                                    "Về: ${post.thoiGianVe}",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 16.0),
-                                                  ),
+                                        ),
+                                        ClipRect(
+                                          child: BackdropFilter(
+                                            filter: new ImageFilter.blur(
+                                                sigmaX: 10.0, sigmaY: 10.0),
+                                            child: Container(
+                                              color: Palette.koniuBlue
+                                                  .withOpacity(0.5),
+                                              height: isDesktop ? 50.0 : 30.0,
+                                              child: Center(
+                                                child: Text(
+                                                  "Về: ${post.thoiGianVe}",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16.0),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                     onTap: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (_) {
+                                      //       return FullscreenImage(
+                                      //           tag: post.diVeImgUrl,
+                                      //           url: post.diVeImgUrl);
+                                      //     },
+                                      //   ),
+                                      // );
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (_) {
-                                            return FullscreenImage(
-                                                tag: post.diVeImgUrl,
-                                                url: post.diVeImgUrl);
-                                          },
+                                        PageRouteBuilder(
+                                          pageBuilder: (c, a1, a2) =>
+                                              FullscreenImage(
+                                                  tag: post.diVeImgUrl,
+                                                  url: post.diVeImgUrl),
+                                          transitionsBuilder:
+                                              (c, anim, a2, child) =>
+                                                  FadeTransition(
+                                                      opacity: anim,
+                                                      child: child),
+                                          // transitionDuration: Duration(milliseconds: 2000),
                                         ),
                                       );
                                     },
@@ -280,14 +310,15 @@ class _PostHeader extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => KidScreen(
-              idHS: post.idHocSinh.toString(),
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   CupertinoPageRoute(
+        //     builder: (context) => KidScreen(
+        //       idHS: post.idHocSinh.toString(),
+        //     ),
+        //   ),
+        // );
+        Navigator.pushNamed(context, '/kid/${post.idHocSinh.toString()}');
       },
       child: Row(
         children: [

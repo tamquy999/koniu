@@ -249,16 +249,19 @@ class __MobileParentScreenState extends State<_MobileParentScreen> {
                                                           right: 10.0),
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        CupertinoPageRoute(
-                                                          builder: (context) =>
-                                                              KidScreen(
-                                                            idHS: listkid.id
-                                                                .toString(),
-                                                          ),
-                                                        ),
-                                                      );
+                                                      // Navigator.push(
+                                                      //   context,
+                                                      //   CupertinoPageRoute(
+                                                      //     builder: (context) =>
+                                                      //         KidScreen(
+                                                      //       idHS: listkid.id
+                                                      //           .toString(),
+                                                      //     ),
+                                                      //   ),
+                                                      // );
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          "/kid/${listkid.id.toString()}");
                                                     },
                                                     child: ClipRRect(
                                                       borderRadius:
@@ -511,17 +514,20 @@ class __DesktopParentScreenState extends State<_DesktopParentScreen> {
                                                             right: 10.0),
                                                     child: GestureDetector(
                                                       onTap: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          CupertinoPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    KidScreen(
-                                                              idHS: listkid.id
-                                                                  .toString(),
-                                                            ),
-                                                          ),
-                                                        );
+                                                        // Navigator.push(
+                                                        //   context,
+                                                        //   CupertinoPageRoute(
+                                                        //     builder:
+                                                        //         (context) =>
+                                                        //             KidScreen(
+                                                        //       idHS: listkid.id
+                                                        //           .toString(),
+                                                        //     ),
+                                                        //   ),
+                                                        // );
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            "/kid/${listkid.id.toString()}");
                                                       },
                                                       child: ClipRRect(
                                                         borderRadius:

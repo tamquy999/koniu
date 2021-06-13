@@ -524,14 +524,15 @@ class _HealthHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => KidScreen(
-              idHS: health.idHs.toString(),
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   CupertinoPageRoute(
+        //     builder: (context) => KidScreen(
+        //       idHS: health.idHs.toString(),
+        //     ),
+        //   ),
+        // );
+        Navigator.pushNamed(context, '/kid/${health.idHs.toString()}');
       },
       child: Row(
         children: [

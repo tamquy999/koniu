@@ -64,13 +64,23 @@ class ActivityContainer extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (_) {
+                          //       return FullscreenImage(
+                          //           tag: activity.imgUrl, url: activity.imgUrl);
+                          //     },
+                          //   ),
+                          // );
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (_) {
-                                return FullscreenImage(
-                                    tag: activity.imgUrl, url: activity.imgUrl);
-                              },
+                            PageRouteBuilder(
+                              pageBuilder: (c, a1, a2) => FullscreenImage(
+                                  tag: activity.imgUrl, url: activity.imgUrl),
+                              transitionsBuilder: (c, anim, a2, child) =>
+                                  FadeTransition(opacity: anim, child: child),
+                              // transitionDuration: Duration(milliseconds: 2000),
                             ),
                           );
                         },
@@ -97,14 +107,16 @@ class _ActivityHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => TeacherScreen(
-              idGV: activity.idGiaoVien.toString(),
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   CupertinoPageRoute(
+        //     builder: (context) => TeacherScreen(
+        //       idGV: activity.idGiaoVien.toString(),
+        //     ),
+        //   ),
+        // );
+        Navigator.pushNamed(
+            context, '/teacher/${activity.idGiaoVien.toString()}');
       },
       child: Row(
         children: [
