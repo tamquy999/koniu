@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:exif/exif.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -54,6 +55,9 @@ class _CheckinContainerState extends State<CheckinContainer> {
       }
     });
 
+    var bytes = await pickedFile.readAsBytes();
+    var tags = await readExifFromBytes(bytes);
+
     UploadedImage uimage;
     uploadImage2(_byteImage).then((value) {
       uimage = value;
@@ -61,6 +65,15 @@ class _CheckinContainerState extends State<CheckinContainer> {
       isDen
           ? tempPost.diDenImgUrl = uimage.linkImg
           : tempPost.diVeImgUrl = uimage.linkImg;
+      if (isDen) {
+        tempPost.diDenImgUrl = uimage.linkImg;
+        if (tags.isNotEmpty)
+          tempPost.thoiGianDen = tags['Image DateTime'].printable.substring(11);
+      } else {
+        tempPost.diVeImgUrl = uimage.linkImg;
+        if (tags.isNotEmpty)
+          tempPost.thoiGianVe = tags['Image DateTime'].printable.substring(11);
+      }
       updatePost(tempPost).then((value) {
         print(value);
         // setState(() {});

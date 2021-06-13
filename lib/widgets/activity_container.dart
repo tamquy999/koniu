@@ -42,7 +42,8 @@ class ActivityContainer extends StatelessWidget {
                 children: [
                   _ActivityHeader(activity: activity),
                   const SizedBox(height: 4.0),
-                  Text(activity.thongTin),
+                  // Text(activity.thongTin),
+                  SelectableText(activity.thongTin),
                   const SizedBox(height: 8.0),
                   activity.imgUrl != null
                       ? const SizedBox.shrink()

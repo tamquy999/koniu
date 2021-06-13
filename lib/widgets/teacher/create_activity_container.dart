@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:exif/exif.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/api_connection/api_connection.dart';
@@ -25,7 +27,8 @@ class _CreateActivityContainerState extends State<CreateActivityContainer> {
   final _captionController = TextEditingController();
   // String _caption = "";
   Image _image;
-  PickedFile _byteImage;
+  PickedFile _pickedImage;
+  Uint8List _byteImage;
   final picker = ImagePicker();
   Activity activity = Activity();
 
@@ -36,17 +39,18 @@ class _CreateActivityContainerState extends State<CreateActivityContainer> {
 
     print(pickedFile.path);
 
-    setState(() {
-      if (pickedFile != null) {
-        if (!kIsWeb)
-          _image = Image.file(File(pickedFile.path));
-        else
-          _image = Image.network(pickedFile.path);
-        _byteImage = pickedFile;
-      } else {
-        print('No image selected.');
-      }
-    });
+    if (pickedFile != null) {
+      if (!kIsWeb)
+        _image = Image.file(File(pickedFile.path));
+      else
+        _image = Image.network(pickedFile.path);
+      _pickedImage = pickedFile;
+      _byteImage = await pickedFile.readAsBytes();
+    } else {
+      print('No image selected.');
+    }
+
+    setState(() {});
   }
 
   void _buttonPressed() {
@@ -60,7 +64,7 @@ class _CreateActivityContainerState extends State<CreateActivityContainer> {
         });
       } else {
         UploadedImage uimage;
-        uploadImage2(_byteImage).then((value) {
+        uploadImage2(_pickedImage).then((value) {
           uimage = value;
           print(uimage.linkImg);
 
@@ -121,16 +125,16 @@ class _CreateActivityContainerState extends State<CreateActivityContainer> {
                     alignment: AlignmentDirectional.topEnd,
                     children: [
                       // Image.file(_image),
-
-                      Container(
-                        height: 600,
-                        decoration: BoxDecoration(
-                          // color: Colors.green,
-                          image: DecorationImage(
-                              image: _image.image // <--- .image added here
-                              ),
-                        ),
-                      ),
+                      Image.memory(_byteImage),
+                      // Container(
+                      //   height: 600,
+                      //   decoration: BoxDecoration(
+                      //     // color: Colors.green,
+                      //     image: DecorationImage(
+                      //         image: _image.image // <--- .image added here
+                      //         ),
+                      //   ),
+                      // ),
                       RawMaterialButton(
                         constraints:
                             BoxConstraints(minWidth: 30.0, minHeight: 30.0),
