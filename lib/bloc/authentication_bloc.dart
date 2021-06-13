@@ -81,7 +81,7 @@ class AuthenticationBloc
 
     if (event is LoggedOut) {
       yield AuthenticationLoading();
-
+      await userRepository.apiRevokeToken();
       if (!kIsWeb)
         await userRepository.deleteToken(id: 0);
       else

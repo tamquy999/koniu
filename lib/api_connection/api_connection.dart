@@ -40,6 +40,22 @@ Future<Token> getToken(UserLogin userLogin) async {
   }
 }
 
+Future<String> revokeToken() async {
+  String token = await getLocalToken();
+  final http.Response response = await http.post(
+      new Uri.http(
+          _base, '/token/expired', <String, String>{'access_token': token}),
+      headers: <String, String>{
+        'accept': 'application/json',
+      });
+  if (response.statusCode == 200) {
+    print("revoked");
+    return "OK";
+  } else {
+    throw Exception(json.decode(response.body));
+  }
+}
+
 Future<String> getLocalToken() async {
   // String token;
   if (kIsWeb) {

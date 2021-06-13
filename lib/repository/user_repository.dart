@@ -39,6 +39,10 @@ class UserRepository {
     await userDao.deleteUser(id);
   }
 
+  Future<void> apiRevokeToken() async {
+    await revokeToken();
+  }
+
   Future<bool> hasToken() async {
     bool result = await userDao.checkUser(0);
     print("dao" + result.toString());
