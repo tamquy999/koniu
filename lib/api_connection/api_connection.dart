@@ -184,7 +184,8 @@ Future<List<Post2>> getGVPost(String date) async {
 }
 
 Future<String> updatePost(Post2 post) async {
-  // print(_tokenURL);
+  print(post.diDenImgUrl);
+  print(post.diVeImgUrl);
   String token = await getLocalToken();
 
   var jsonBody = post.toJson();

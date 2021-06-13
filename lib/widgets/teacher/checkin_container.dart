@@ -61,7 +61,11 @@ class _CheckinContainerState extends State<CheckinContainer> {
     UploadedImage uimage;
     uploadImage(_image).then((value) {
       uimage = value;
-      updatePost(widget.post).then((value) {
+      Post2 tempPost = widget.post;
+      isDen
+          ? tempPost.diDenImgUrl = uimage.linkImg
+          : tempPost.diVeImgUrl = uimage.linkImg;
+      updatePost(tempPost).then((value) {
         print(value);
         // setState(() {});
         widget.onCreate();
