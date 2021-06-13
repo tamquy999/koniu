@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/api_connection/api_connection.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
@@ -31,7 +32,8 @@ class CheckinContainer extends StatefulWidget {
 }
 
 class _CheckinContainerState extends State<CheckinContainer> {
-  File _image;
+  Image _image;
+  PickedFile _byteImage;
   final picker = ImagePicker();
 
   Future takeImage(bool isDesktop, bool isDen) async {
@@ -39,19 +41,13 @@ class _CheckinContainerState extends State<CheckinContainer> {
         ? await picker.getImage(source: ImageSource.gallery, maxWidth: 1080.0)
         : await picker.getImage(source: ImageSource.camera, maxWidth: 1080.0);
 
-    // // getting a directory path for saving
-    final Directory extDir = await getApplicationDocumentsDirectory();
-    String dirPath = extDir.path;
-    final String filePath = '$dirPath/image.png';
-    print(filePath);
-    File(filePath).writeAsString("anc");
-
-    // // copy the file to a new path
-    // final File newImage = await _image.copy(filePath);
-
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        if (!kIsWeb)
+          _image = Image.file(File(pickedFile.path));
+        else
+          _image = Image.network(pickedFile.path);
+        _byteImage = pickedFile;
       } else {
         print('No image selected.');
         return;
@@ -59,7 +55,7 @@ class _CheckinContainerState extends State<CheckinContainer> {
     });
 
     UploadedImage uimage;
-    uploadImage(_image).then((value) {
+    uploadImage2(_byteImage).then((value) {
       uimage = value;
       Post2 tempPost = widget.post;
       isDen

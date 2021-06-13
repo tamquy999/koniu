@@ -3,6 +3,7 @@ import 'dart:async';
 // import 'package:async/async.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_responsive_ui/dao/user_dao.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_facebook_responsive_ui/models/models.dart';
 import 'package:flutter_facebook_responsive_ui/models/parentInfo_model.dart';
 import 'package:flutter_facebook_responsive_ui/models/teacherInfo_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 // import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -94,14 +96,15 @@ Future<User> getUser() async {
 }
 
 //Return UploadedImage object ;
-Future<UploadedImage> uploadImage(File image) async {
+Future<UploadedImage> uploadImage(String imagePath) async {
   var request = new http.MultipartRequest(
       "POST", new Uri.http(_base, "/api/upload/image"));
 
   request.headers['Content-Type'] = 'multipart/form-data';
   request.headers['accept'] = 'application/json';
 
-  request.files.add(await http.MultipartFile.fromPath('image', image.path));
+  request.files.add(await http.MultipartFile.fromPath('image', imagePath));
+  // request.files.add(await http.MultipartFile.fromBytes(field, value));
 
   http.Response res = await http.Response.fromStream(await request.send());
   if (res.statusCode == 200) {
@@ -111,23 +114,24 @@ Future<UploadedImage> uploadImage(File image) async {
   }
 }
 
-Future<ImageName> uploadImage2(File image) async {
-  //create multipart request for POST or PATCH method
-  var request = http.MultipartRequest(
-      "POST", Uri.parse("http://103.81.86.241:2812/api/upload/image"));
-  //add text fields
-  //  request.fields["text_field"] = text;
-  //create multipart using filepath, string or bytes
-  var pic = await http.MultipartFile.fromPath("image", image.path);
-  //add multipart to request
-  request.files.add(pic);
-  var response = await request.send();
+Future<UploadedImage> uploadImage2(PickedFile image) async {
+  var request = new http.MultipartRequest(
+      "POST", new Uri.http(_base, "/api/upload/image"));
 
-  //Get the response from the server
-  var responseData = await response.stream.toBytes();
-  var responseString = String.fromCharCodes(responseData);
-  // print(responseString);
-  return ImageName.fromJson(json.decode(responseString));
+  request.headers['Content-Type'] = 'multipart/form-data';
+  request.headers['accept'] = 'application/json';
+
+  Uint8List data = await image.readAsBytes();
+  List<int> list = data.cast();
+  request.files
+      .add(http.MultipartFile.fromBytes('image', list, filename: 'myFile.png'));
+
+  http.Response res = await http.Response.fromStream(await request.send());
+  if (res.statusCode == 200) {
+    return UploadedImage.fromJson(json.decode(res.body));
+  } else {
+    throw Exception(json.decode(res.body));
+  }
 }
 
 // Post

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_responsive_ui/api_connection/api_connection.dart';
 import 'package:flutter_facebook_responsive_ui/config/palette.dart';
@@ -23,7 +24,8 @@ class CreateActivityContainer extends StatefulWidget {
 class _CreateActivityContainerState extends State<CreateActivityContainer> {
   final _captionController = TextEditingController();
   // String _caption = "";
-  File _image;
+  Image _image;
+  PickedFile _byteImage;
   final picker = ImagePicker();
   Activity activity = Activity();
 
@@ -32,19 +34,15 @@ class _CreateActivityContainerState extends State<CreateActivityContainer> {
         ? await picker.getImage(source: ImageSource.camera, maxWidth: 1080.0)
         : await picker.getImage(source: ImageSource.gallery, maxWidth: 1080.0);
 
-    // // getting a directory path for saving
-    final Directory extDir = await getApplicationDocumentsDirectory();
-    String dirPath = extDir.path;
-    final String filePath = '$dirPath/image.png';
-    print(filePath);
-    File(filePath).writeAsString("anc");
-
-    // // copy the file to a new path
-    // final File newImage = await _image.copy(filePath);
+    print(pickedFile.path);
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        if (!kIsWeb)
+          _image = Image.file(File(pickedFile.path));
+        else
+          _image = Image.network(pickedFile.path);
+        _byteImage = pickedFile;
       } else {
         print('No image selected.');
       }
@@ -62,7 +60,7 @@ class _CreateActivityContainerState extends State<CreateActivityContainer> {
         });
       } else {
         UploadedImage uimage;
-        uploadImage(_image).then((value) {
+        uploadImage2(_byteImage).then((value) {
           uimage = value;
           print(uimage.linkImg);
 
@@ -122,7 +120,17 @@ class _CreateActivityContainerState extends State<CreateActivityContainer> {
                 : Stack(
                     alignment: AlignmentDirectional.topEnd,
                     children: [
-                      Image.file(_image),
+                      // Image.file(_image),
+
+                      Container(
+                        height: 600,
+                        decoration: BoxDecoration(
+                          // color: Colors.green,
+                          image: DecorationImage(
+                              image: _image.image // <--- .image added here
+                              ),
+                        ),
+                      ),
                       RawMaterialButton(
                         constraints:
                             BoxConstraints(minWidth: 30.0, minHeight: 30.0),
