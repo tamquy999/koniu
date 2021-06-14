@@ -123,7 +123,12 @@ class __CheckinScreenMobileState extends State<_CheckinScreenMobile> {
                     child: _hasPost
                         ? CircularProgressIndicator()
                         : Text(
-                            "Chưa có thông tin điểm danh",
+                            Jiffy(_currentMonth).format("MM/yyyy").compareTo(
+                                        Jiffy(DateTime.now())
+                                            .format("MM/yyyy")) ==
+                                    0
+                                ? "Chưa có thông tin điểm danh"
+                                : "Không có thông tin điểm danh",
                             style: TextStyle(color: Colors.black26),
                           ),
                   ),
@@ -242,7 +247,13 @@ class __CheckinScreenDesktopState extends State<_CheckinScreenDesktop> {
                           child: _hasPost
                               ? CircularProgressIndicator()
                               : Text(
-                                  "Chưa có thông tin điểm danh",
+                                  Jiffy(_currentMonth)
+                                              .format("MM/yyyy")
+                                              .compareTo(Jiffy(DateTime.now())
+                                                  .format("MM/yyyy")) ==
+                                          0
+                                      ? "Chưa có thông tin điểm danh"
+                                      : "Không có thông tin điểm danh",
                                   style: TextStyle(color: Colors.black26),
                                 ),
                         ),

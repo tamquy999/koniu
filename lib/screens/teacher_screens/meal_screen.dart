@@ -107,13 +107,10 @@ class __MobileMealScreenState extends State<_MobileMealScreen> {
           CustomMonthPicker(datetime: _currentMonth, sub: _sub, add: _add),
           SliverToBoxAdapter(
             child: (_monthMeals != null &&
-                        _monthMeals[0].ngay.month == DateTime.now().month &&
-                        Jiffy(_monthMeals[0].ngay)
-                                .format("dd/MM/yyyy")
-                                .compareTo(Jiffy(DateTime.now())
-                                    .format("dd/MM/yyyy")) !=
-                            0) ||
-                    _monthMeals == null
+                    _monthMeals[0].ngay.month == DateTime.now().month &&
+                    Jiffy(_monthMeals[0].ngay).format("dd/MM/yyyy").compareTo(
+                            Jiffy(DateTime.now()).format("dd/MM/yyyy")) !=
+                        0)
                 ? CreateMealContainer(
                     onCreate: reloadList,
                     meal: new Meal(ngay: DateTime.now()),
@@ -127,7 +124,12 @@ class __MobileMealScreenState extends State<_MobileMealScreen> {
                     child: _hasPost
                         ? CircularProgressIndicator()
                         : Text(
-                            "Chưa có thông tin thực đơn",
+                            Jiffy(_currentMonth).format("MM/yyyy").compareTo(
+                                        Jiffy(DateTime.now())
+                                            .format("MM/yyyy")) ==
+                                    0
+                                ? "Chưa có thông tin thực đơn"
+                                : "Không có thông tin thực đơn",
                             style: TextStyle(color: Colors.black26),
                           ),
                   ),
@@ -189,6 +191,16 @@ class __DesktopMealScreenState extends State<_DesktopMealScreen> {
     reloadList();
   }
 
+  bool canEditMeal() {
+    if ((_monthMeals != null &&
+            _monthMeals[0].ngay.month == DateTime.now().month &&
+            Jiffy(_monthMeals[0].ngay)
+                    .format("dd/MM/yyyy")
+                    .compareTo(Jiffy(DateTime.now()).format("dd/MM/yyyy")) !=
+                0) ||
+        _monthMeals == null) {}
+  }
+
   Future<String> reloadList() async {
     getMeals(_currentMonth.toString().substring(0, 10)).then((val) {
       _monthMeals = val;
@@ -239,14 +251,12 @@ class __DesktopMealScreenState extends State<_DesktopMealScreen> {
                 ),
                 SliverToBoxAdapter(
                   child: (_monthMeals != null &&
-                              _monthMeals[0].ngay.month ==
-                                  DateTime.now().month &&
-                              Jiffy(_monthMeals[0].ngay)
-                                      .format("dd/MM/yyyy")
-                                      .compareTo(Jiffy(DateTime.now())
-                                          .format("dd/MM/yyyy")) !=
-                                  0) ||
-                          _monthMeals == null
+                          _monthMeals[0].ngay.month == DateTime.now().month &&
+                          Jiffy(_monthMeals[0].ngay)
+                                  .format("dd/MM/yyyy")
+                                  .compareTo(Jiffy(DateTime.now())
+                                      .format("dd/MM/yyyy")) !=
+                              0)
                       ? CreateMealContainer(
                           onCreate: reloadList,
                           meal: new Meal(ngay: DateTime.now()),
@@ -260,7 +270,13 @@ class __DesktopMealScreenState extends State<_DesktopMealScreen> {
                           child: _hasPost
                               ? CircularProgressIndicator()
                               : Text(
-                                  "Chưa có thông tin thực đơn",
+                                  Jiffy(_currentMonth)
+                                              .format("MM/yyyy")
+                                              .compareTo(Jiffy(DateTime.now())
+                                                  .format("MM/yyyy")) ==
+                                          0
+                                      ? "Chưa có thông tin thực đơn"
+                                      : "Không có thông tin thực đơn",
                                   style: TextStyle(color: Colors.black26),
                                 ),
                         ),

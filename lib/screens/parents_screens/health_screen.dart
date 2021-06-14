@@ -109,7 +109,12 @@ class __MobileHealthScreenState extends State<_MobileHealthScreen> {
                     child: _hasPost
                         ? CircularProgressIndicator()
                         : Text(
-                            "Chưa có thông tin sức khỏe",
+                            Jiffy(_currentMonth).format("MM/yyyy").compareTo(
+                                        Jiffy(DateTime.now())
+                                            .format("MM/yyyy")) ==
+                                    0
+                                ? "Chưa có thông tin sức khỏe"
+                                : "Không có thông tin sức khỏe",
                             style: TextStyle(color: Colors.black26),
                           ),
                   ),
@@ -221,7 +226,13 @@ class __DesktopHealthScreenState extends State<_DesktopHealthScreen> {
                           child: _hasPost
                               ? CircularProgressIndicator()
                               : Text(
-                                  "Chưa có thông tin sức khỏe",
+                                  Jiffy(_currentMonth)
+                                              .format("MM/yyyy")
+                                              .compareTo(Jiffy(DateTime.now())
+                                                  .format("MM/yyyy")) ==
+                                          0
+                                      ? "Chưa có thông tin sức khỏe"
+                                      : "Không có thông tin sức khỏe",
                                   style: TextStyle(color: Colors.black26),
                                 ),
                         ),

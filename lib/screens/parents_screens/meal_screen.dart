@@ -103,7 +103,12 @@ class __MobileMealScreenState extends State<_MobileMealScreen> {
                   child: _hasPost
                       ? CircularProgressIndicator()
                       : Text(
-                          "Chưa có thông tin thực đơn",
+                          Jiffy(_currentMonth).format("MM/yyyy").compareTo(
+                                      Jiffy(DateTime.now())
+                                          .format("MM/yyyy")) ==
+                                  0
+                              ? "Chưa có thông tin thực đơn"
+                              : "Không có thông tin thực đơn",
                           style: TextStyle(color: Colors.black26),
                         ),
                 ),
@@ -213,7 +218,13 @@ class __DesktopMealScreenState extends State<_DesktopMealScreen> {
                           child: _hasPost
                               ? CircularProgressIndicator()
                               : Text(
-                                  "Chưa có thông tin thực đơn",
+                                  Jiffy(_currentMonth)
+                                              .format("MM/yyyy")
+                                              .compareTo(Jiffy(DateTime.now())
+                                                  .format("MM/yyyy")) ==
+                                          0
+                                      ? "Chưa có thông tin thực đơn"
+                                      : "Không có thông tin thực đơn",
                                   style: TextStyle(color: Colors.black26),
                                 ),
                         ),

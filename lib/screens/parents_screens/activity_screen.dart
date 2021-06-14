@@ -75,7 +75,8 @@ class __MobileActivityScreenState extends State<_MobileActivityScreen> {
   Future<String> reloadList() async {
     getPHAct(_currentDate.toString().substring(0, 10)).then((val) {
       _dailyActivities = val;
-      _hasPost = true;
+      _hasPost = _dailyActivities.length == 0 ? false : true;
+      if (_dailyActivities.length == 0) _dailyActivities = null;
       setState(() {});
       print(val);
     }).catchError((error, stackTrace) {
@@ -103,7 +104,12 @@ class __MobileActivityScreenState extends State<_MobileActivityScreen> {
                     child: _hasPost
                         ? CircularProgressIndicator()
                         : Text(
-                            "Chưa có hoạt động trong ngày",
+                            Jiffy(_currentDate).format("dd/MM/yyyy").compareTo(
+                                        Jiffy(DateTime.now())
+                                            .format("dd/MM/yyyy")) ==
+                                    0
+                                ? "Chưa có hoạt động trong ngày"
+                                : "Không có hoạt động trong ngày",
                             style: TextStyle(color: Colors.black26),
                           ),
                   ),
@@ -214,7 +220,13 @@ class __DesktopActivityScreenState extends State<_DesktopActivityScreen> {
                           child: _hasPost
                               ? CircularProgressIndicator()
                               : Text(
-                                  "Chưa có hoạt động trong ngày",
+                                  Jiffy(_currentDate)
+                                              .format("dd/MM/yyyy")
+                                              .compareTo(Jiffy(DateTime.now())
+                                                  .format("dd/MM/yyyy")) ==
+                                          0
+                                      ? "Chưa có hoạt động trong ngày"
+                                      : "Không có hoạt động trong ngày",
                                   style: TextStyle(color: Colors.black26),
                                 ),
                         ),

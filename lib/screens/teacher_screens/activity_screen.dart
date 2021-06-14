@@ -115,7 +115,12 @@ class __ActivityScreenMobileState extends State<_ActivityScreenMobile> {
                     child: _hasPost
                         ? CircularProgressIndicator()
                         : Text(
-                            "Chưa có hoạt động trong ngày",
+                            Jiffy(_currentDate).format("dd/MM/yyyy").compareTo(
+                                        Jiffy(DateTime.now())
+                                            .format("dd/MM/yyyy")) ==
+                                    0
+                                ? "Chưa có hoạt động trong ngày"
+                                : "Không có hoạt động trong ngày",
                             style: TextStyle(color: Colors.black26),
                           ),
                   ),
@@ -239,7 +244,13 @@ class __ActivityScreenDesktopState extends State<_ActivityScreenDesktop> {
                           child: _hasPost
                               ? CircularProgressIndicator()
                               : Text(
-                                  "Chưa có hoạt động trong ngày",
+                                  Jiffy(_currentDate)
+                                              .format("dd/MM/yyyy")
+                                              .compareTo(Jiffy(DateTime.now())
+                                                  .format("dd/MM/yyyy")) ==
+                                          0
+                                      ? "Chưa có hoạt động trong ngày"
+                                      : "Không có hoạt động trong ngày",
                                   style: TextStyle(color: Colors.black26),
                                 ),
                         ),
