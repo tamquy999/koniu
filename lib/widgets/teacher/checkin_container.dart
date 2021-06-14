@@ -281,8 +281,9 @@ class _CheckinContainerState extends State<CheckinContainer> {
                                             imageUrl: widget.post.diVeImgUrl,
                                             height: isDesktop ? 400.0 : 200.0,
                                             fit: BoxFit.cover,
-                                            placeholder: (context, url) =>
-                                                CircularProgressIndicator(),
+                                            placeholder: (context, url) => Center(
+                                                child:
+                                                    CircularProgressIndicator()),
                                             errorWidget:
                                                 (context, url, error) =>
                                                     Icon(Icons.error),
